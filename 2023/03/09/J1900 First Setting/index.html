@@ -1,0 +1,226 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><title>记一次折腾J1900软路由的过程 | 羽殇之舞的个人博客</title><meta name="author" content="羽殇之舞"><meta name="copyright" content="羽殇之舞"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第一次整软路由，笔者正处于大创报账时期，虽然不知道能不能报上去，反正挑了个合适价位的 J1900 的软路由买回来一阵折腾。由于怀着着折腾的心思，买的是裸主机，这意味着内存和硬盘都没有自带，同时 openwrt 系统就更不用说了，肯定得自己装上去。在收货当天笔者就开始了各项工作，结果还是花了好几天踩坑才将一切搞定，故记下这次极其耗神的工作。 软路由是什么按笔者目前理解，软路由就是一台至少带了多个网口">
+<meta property="og:type" content="article">
+<meta property="og:title" content="记一次折腾J1900软路由的过程">
+<meta property="og:url" content="http://gg2002.github.io/2023/03/09/J1900%20First%20Setting/index.html">
+<meta property="og:site_name" content="羽殇之舞的个人博客">
+<meta property="og:description" content="第一次整软路由，笔者正处于大创报账时期，虽然不知道能不能报上去，反正挑了个合适价位的 J1900 的软路由买回来一阵折腾。由于怀着着折腾的心思，买的是裸主机，这意味着内存和硬盘都没有自带，同时 openwrt 系统就更不用说了，肯定得自己装上去。在收货当天笔者就开始了各项工作，结果还是花了好几天踩坑才将一切搞定，故记下这次极其耗神的工作。 软路由是什么按笔者目前理解，软路由就是一台至少带了多个网口">
+<meta property="og:locale">
+<meta property="og:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png">
+<meta property="article:published_time" content="2023-03-09T09:54:14.000Z">
+<meta property="article:modified_time" content="2023-03-09T11:21:51.568Z">
+<meta property="article:author" content="羽殇之舞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/2023/03/09/J1900%20First%20Setting/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  }
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '记一次折腾J1900软路由的过程',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2023-03-09 19:21:51'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 种类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"><img class="site-icon" src="/img/favicon.png"/><span class="site-name">羽殇之舞的个人博客</span></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 种类</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 列表</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> 音乐</span></a></li><li><a class="site-page child" href="/movies/"><i class="fa-fw fas fa-video"></i><span> 电影</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">记一次折腾J1900软路由的过程</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2023-03-09T09:54:14.000Z" title="Created 2023-03-09 17:54:14">2023-03-09</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2023-03-09T11:21:51.568Z" title="Updated 2023-03-09 19:21:51">2023-03-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="记一次折腾J1900软路由的过程"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>第一次整软路由，笔者正处于大创报账时期，虽然不知道能不能报上去，反正挑了个合适价位的 J1900 的软路由买回来一阵折腾。由于怀着着折腾的心思，买的是裸主机，这意味着内存和硬盘都没有自带，同时 openwrt 系统就更不用说了，肯定得自己装上去。在收货当天笔者就开始了各项工作，结果还是花了好几天踩坑才将一切搞定，故记下这次极其耗神的工作。</p>
+<h2 id="软路由是什么"><a href="#软路由是什么" class="headerlink" title="软路由是什么"></a>软路由是什么</h2><p>按笔者目前理解，软路由就是一台至少带了多个网口的过时主机，CPU、内存、硬盘等基本一应俱全。笔者手里这台就是 J1900CPU、四网口的一台软路由，双十二期间价钱 720+就拿下来了。<br>拥有复数个网口后，只要在主机上装一个 openwrt 系统，再给网口分配 LAN 口和 WAN 口，这台主机就是软路由了。换言之，只要有两个网口，任何电脑都可以改成软路由，只是功耗等不尽相同罢了。<br>与软路由相对的就是——硬路由，也就是一般我们称呼的路由器，软路由一般应用在有线网中，至于无线网则会靠额外连接一个无线 AP 来实现，而硬路由则集成这两项功能且更简单易用，当然价钱多少会高上一点。<br><img src="/2023/03/09/J1900%20First%20Setting/joker.jpg" alt="joker.jpg"></p>
+<h2 id="J1900-路由器介绍"><a href="#J1900-路由器介绍" class="headerlink" title="J1900 路由器介绍"></a>J1900 路由器介绍</h2><p>先来张内部结构图：<br><img src="/2023/03/09/J1900%20First%20Setting/Inked20220325164917_LI.jpg" alt="Inked20220325164917_LI.jpg"><br>图中的已经装好了内存条，可以看到硬盘上圈出来的分别是网卡接口（WIFI），msata 硬盘接口（MSATA）和 SATA 硬盘接口，网卡口和 msata 接口一摸一样以至于笔者搞混了很多次，咨询了客服后才发现主板上的白字。。</p>
+<p>按这篇博客的说法，网卡模块可以直接无视，只建议直接再买一个无线 AP 而不是无线网卡，毕竟有四个网口。</p>
+<blockquote>
+<p>…我选的这款用的是 Intel J1900 四核处理器，性能相当可以的，有 4 个 Intel I211 千兆网口、…而且预留了天线接口，不过买之前卖家就提醒了，这货由于四个千兆网卡占用了 cpu 所有的 pci-e 通道，所以如果要装无线网卡虚拟 AP 的话，只能用 USB 定义的无线…</p>
+</blockquote>
+<p>（这里吐槽一下在学校买的二手 ddr3 内存条和 msata 盘全都不能用，这张主板只支持 ddr3L（低压版）内存，硬盘也是坏的，后续又花了 100+上某宝收了 4G ddr3L 内存和 32G msata 盘装上）<br><img src="/2023/03/09/J1900%20First%20Setting/IMG_20220223_195803.jpg" alt="IMG_20220223_195803.jpg" title="当时没有msata硬盘就只能用老旧笔记本的机械硬盘顶一顶了。。"></p>
+<h2 id="安装-openwrt-系统"><a href="#安装-openwrt-系统" class="headerlink" title="安装 openwrt 系统"></a>安装 openwrt 系统</h2><h3 id="openwrt-下载"><a href="#openwrt-下载" class="headerlink" title="openwrt 下载"></a>openwrt 下载</h3><blockquote>
+<p>openwrt 官网下载 <a target="_blank" rel="noopener" href="https://archive.openwrt.org/releases/19.07.2/targets/x86/64/">https://archive.openwrt.org/releases/19.07.2/targets/x86/64/</a></p>
+</blockquote>
+<p>务必下载 19.07.2 版 openwrt 系统，在后面系统扩容时笔者拿着 21 版本的系统试了又试，重装了一遍又一遍，步骤和那些博客上的一摸一样就是开不了机，然后笔者在一篇文章截图中发现了他用的是 19.07.2 版本的系统，换成这个系统后一次就成功了。。笔者不是很清楚 openwrt 系统迭代过程中发生了啥，总之下这个版本肯定没有问题就是了。</p>
+<h3 id="openwrt-系统刻录"><a href="#openwrt-系统刻录" class="headerlink" title="openwrt 系统刻录"></a>openwrt 系统刻录</h3><p>网上多数说法是下载一个 PE，然后进入 PE 用 physdiskwrite 写入硬盘，精简版如下：</p>
+<blockquote>
+<p>(1) 下载 PE 工具盘制作工具，制作一个 PE 工具 U 盘<br>(2) 将 physdiskwrite 和软路由镜像固件拷贝到制作好的 PE 工具 U 盘插到电脑上识别出的盘符根目录下<br>(3) 将 PE 工具盘插入 J1900 小主机，通过 U 盘启动 PE 系统<br>(4) 打开 cmd 命令行工具<br>(5) 键入“U:” 后按回车键<br>(6) 再输入“physdiskwrite -u 下载好的软路由镜像.img” 后回车<br>(7) 根据提示选择安装软路由系统的硬盘盘符（一般是 0，输入 0 回车即可，但具体还得看自己的实际盘符情况）<br>(8) 再根据提示键入 y，等待一段时间完成刻录，关机拔 U 盘，在开机从硬盘启动即可进入软路由系统</p>
+</blockquote>
+<p>这件事的思路是很清晰的，即：</p>
+<blockquote>
+<p>1.msata 口硬盘没有专门的转接卡插不进现在一般的笔记本电脑，所以很难通过外界来给硬盘写数据。 2.从 U 盘进入 PE 系统，硬盘插在路由器主板上能够被读取，这时候就能用 physdiskwrite 给硬盘写入数据。</p>
+</blockquote>
+<p>所以重点就是给一块硬盘写入数据。这件事本身并不复杂，只是笔者下了四五个 PE 后才终于正常启动其中一个 PE，在折腾期间不得不思考其他方法，最终笔者是在 Linux 虚拟机下用 dd 命令将 openwrt 系统成功写入硬盘。<br>总结一下做法：</p>
+<blockquote>
+<p>1.买张转接卡将 msata 盘接到电脑上，Windows 环境用 physdiskwrite 写入系统，Linux 环境用 dd 写入系统。 2.下载一个 PE，在路由器上进入 PE 用 physdiskwrite 写入系统。</p>
+</blockquote>
+<p>同时笔者在用 physdiskwrite 时发现假如不用 Disk Genius 将硬盘数据清零，再次写入系统时会断在某个地方导致启动不了（还不报错！），所以每次重装系统前都<strong>建议各位将硬盘的 0~3000000 位数据归零</strong>。</p>
+<h3 id="openwrt-系统扩容"><a href="#openwrt-系统扩容" class="headerlink" title="openwrt 系统扩容"></a>openwrt 系统扩容</h3><p>这一步如此重要，但我不知道为什么没有一篇博客在安装过程中提到。<br>openwrt 系统装好并启动后，实际可用容量大概只有几个插件大小（几 M 来着），笔者在装好中文插件和 mentoHUST 插件后就发现可用容量没有了。<br>在系统上边栏进入 &#x2F;系统&#x2F;SoftWare 即可看见自己当前系统插件可用容量。<br><img src="/2023/03/09/J1900%20First%20Setting/QQ%E6%88%AA%E5%9B%BE20220325183452.jpg" alt="QQ截图20220325183452.jpg" title="没有保存当时的图，这是笔者已经扩容过的系统"><br>所以系统扩容势在必行，无论是笔者之前使用的 500G 机械硬盘还是现在使用的 32G 固态硬盘，怎么样也经不住这种浪费。<br>重要的话说三遍：</p>
+<blockquote>
+<p>openwrt 一定要是 19.07.2 版本！<br>openwrt 一定要是 19.07.2 版本！！<br>openwrt 一定要是 19.07.2 版本！！！</p>
+</blockquote>
+<p>其实也未必，笔者没有试过 19 的其他版本，但是 21 版本肯定不行，在扩容过程的某一步中 21 版本的系统分区是 Microsoft xxx 类型的，而 19 版本的文件系统则是 Linux 类型的。笔者无意寻找失败原因，总之假如按本博客所说一步步进行仍然不行的话，只建议系统换个版本。</p>
+<h4 id="扩容第一步"><a href="#扩容第一步" class="headerlink" title="扩容第一步"></a>扩容第一步</h4><p>先装好系统并成功启动一次，否则系统不会自己分区。以下所有操作均在 Linux 环境下进行，笔者是使用 Virtual Box 安装 Ubuntu 系统，通过转接卡将 msata 盘连接至电脑，并挂载到虚拟机上（Virtual Box 读取 USB3.0 还需要安装额外工具包，还好这一步笔者装好就成功了，没有踩坑）。</p>
+<h4 id="扩容后续"><a href="#扩容后续" class="headerlink" title="扩容后续"></a>扩容后续</h4><blockquote>
+<ol>
+<li>df -h 确定硬盘盘符</li>
+<li>umount 硬盘设备</li>
+<li>用 fdisk 命令开始重新分区，这里一定要记住硬盘分区的起点（我的是 57344，等会要用到）。</li>
+<li>重新新建分区２</li>
+<li>保存分区修改</li>
+<li>使修改生效</li>
+</ol>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line">lixinxing@li:~$ sudo fdisk /dev/sdc</span><br><span class="line"></span><br><span class="line">欢迎使用 fdisk (util-linux 2.31.1)。</span><br><span class="line">更改将停留在内存中，直到您决定将更改写入磁盘。</span><br><span class="line">使用写入命令前请三思。</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)： p</span><br><span class="line">Disk /dev/sdc：14.9 GiB，15931539456 字节，31116288 个扇区</span><br><span class="line">单元：扇区 / 1 * 512 = 512 字节</span><br><span class="line">扇区大小(逻辑/物理)：512 字节 / 512 字节</span><br><span class="line">I/O 大小(最小/最佳)：512 字节 / 512 字节</span><br><span class="line">磁盘标签类型：dos</span><br><span class="line">磁盘标识符：0x5452574f</span><br><span class="line"></span><br><span class="line">设备       启动  起点     末尾     扇区  大小 Id 类型</span><br><span class="line">/dev/sdc1  *     8192    49151    40960   20M  c W95 FAT32 (LBA)</span><br><span class="line">/dev/sdc2       57344 31116287 31058944 14.8G 83 Linux</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)： d</span><br><span class="line">分区号 (1,2, 默认  2): 2</span><br><span class="line"></span><br><span class="line">分区 2 已删除。</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)： n</span><br><span class="line">分区类型</span><br><span class="line">   p   主分区 (1个主分区，0个扩展分区，3空闲)</span><br><span class="line">   e   扩展分区 (逻辑分区容器)</span><br><span class="line">选择 (默认 p)： p</span><br><span class="line">分区号 (2-4, 默认  2): 2</span><br><span class="line">第一个扇区 (2048-31116287, 默认 2048): 57344</span><br><span class="line">上个扇区，+sectors 或 +size&#123;K,M,G,T,P&#125; (57344-31116287, 默认 31116287):</span><br><span class="line"></span><br><span class="line">创建了一个新分区 2，类型为“Linux”，大小为 14.8 GiB。</span><br><span class="line">分区 #2 包含一个 ext4 签名。</span><br><span class="line"></span><br><span class="line">您想移除该签名吗？ 是[Y]/否[N]： n</span><br><span class="line"></span><br><span class="line">命令(输入 m 获取帮助)： w</span><br><span class="line"></span><br><span class="line">分区表已调整。</span><br><span class="line">正在同步磁盘。</span><br><span class="line"></span><br><span class="line">lixinxing@li:~$ sudo resize2fs /dev/sdc2</span><br><span class="line">resize2fs 1.44.1 (24-Mar-2018)</span><br><span class="line">/dev/sdc2 上的文件系统已被挂载于 /media/lixinxing/57f8f4bc-abf4-655f-bf67-946fc0f9f25b；需要进行在线调整大小</span><br><span class="line">old_desc_blocks = 1, new_desc_blocks = 1</span><br><span class="line">resize2fs: 无效的参数 检查是否支持在线调整文件系统大小时</span><br><span class="line">lixinxing@li:~$ umount /dev/sdc2</span><br><span class="line">lixinxing@li:~$ sudo resize2fs /dev/sdc2</span><br><span class="line">resize2fs 1.44.1 (24-Mar-2018)</span><br><span class="line">请先运行“e2fsck -f /dev/sdc2”。</span><br><span class="line"></span><br><span class="line">lixinxing@li:~$ sudo e2fsck /dev/sdc2</span><br><span class="line">e2fsck 1.44.1 (24-Mar-2018)</span><br><span class="line">最后一个组的块位图未初始化。  处理? 是</span><br><span class="line">第 1 步：检查inode、块和大小</span><br><span class="line">第 2 步：检查目录结构</span><br><span class="line">第 3 步：检查目录连接性</span><br><span class="line">第 4 步：检查引用计数</span><br><span class="line">第 5 步：检查组概要信息</span><br><span class="line">块位图的差异：  +(65536--66049)</span><br><span class="line">处理? 是</span><br><span class="line"></span><br><span class="line">/dev/sdc2：***** 文件系统已修改 *****</span><br><span class="line">/dev/sdc2：1417/24576 文件（0.0% 为非连续的）， 7480/98304 块</span><br><span class="line">lixinxing@li:~$ sudo resize2fs /dev/sdc2</span><br><span class="line">resize2fs 1.44.1 (24-Mar-2018)</span><br><span class="line">将 /dev/sdc2 上的文件系统调整为 3882368 个块（每块 4k）。</span><br><span class="line">/dev/sdc2 上的文件系统现在为 3882368 个块（每块 4k）。</span><br></pre></td></tr></table></figure>
+
+<p>现在 openwrt 系统已经安装并扩容完毕了，下面开始介绍最最耗时间的 mentoHUST 插件。</p>
+<p>在插件安装之前，笔者需要连上 192.168.0.1 视察一下刚刚装好的全新系统，结果笔者发现，连不上！！！为什么呢，问了一下客服，原来是网线插错网口了。笔者插反了，按一般逻辑当然是 WAN 口占 eth0，然后 eth1、2、3 都是 LAN 口，结果整了这一出。。也许是市面上基本都是两口软路由居多的缘故？<br><img src="/2023/03/09/J1900%20First%20Setting/image.png" alt="image.png" title="openwrt系统默认网口配置"><br>千辛万苦后，笔者终于能够打开心心念念的路由器 web 界面了。<br><img src="/2023/03/09/J1900%20First%20Setting/QQ%E6%88%AA%E5%9B%BE20220325192113.jpg" alt="QQ截图20220325192113.jpg"></p>
+<h2 id="mentoHUST-插件编译及其安装"><a href="#mentoHUST-插件编译及其安装" class="headerlink" title="mentoHUST 插件编译及其安装"></a>mentoHUST 插件编译及其安装</h2><p>装好系统后就需要安装上网插件了，笔者身为华某科的大学生，使用由华科前辈开发的 mentoHUST 合情合理。<br>华某科的校园网限制两台设备上网，大一更是逆天的限制一台设备上网，在笔者大三上期末时不知怎么回事突然支持了三台设备上网，结果寒假一结束就改回去了，不是很懂校方的小心思。<br>使用路由器登陆上网理论上可以使无上限数量限制的设备同时上网，只要路由器上登陆了帐号，其余设备通过路由器上网即可，再加装一个无线 WIFI，嘿嘿嘿嘿。。。</p>
+<h3 id="mentoHUST-插件编译"><a href="#mentoHUST-插件编译" class="headerlink" title="mentoHUST 插件编译"></a>mentoHUST 插件编译</h3><p>这一过程是笔者写这篇博客的主要原因，无他，编译这个 ipk 包让笔者电脑当时跑了一晚上，在狭小黑暗的宿舍里，一台超辣鸡的笔记本电脑的风扇呼呼运行，笔者当时在床上带着一个降噪耳机才勉强睡着，心里还时刻担心着舍友会不会突然暴起把笔者电脑扔了。这种经历，笔者不想再有第二次了。。。<br>究其原因就是笔者完全没有找到交叉编译好的 ipk 包所以不得不用自己电脑跑了一遍，但实际上笔者在编译过程中根本没有看到任何和 openwrt 系统版本有关的选项，换言之，这个 ipk 包理论上可以装在任何一个 openwrt 系统上才是。</p>
+<blockquote>
+<p>这是 mentoHUST ipk 包的 github 仓库地址：<a target="_blank" rel="noopener" href="https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk">https://github.com/KyleRicardo/MentoHUST-OpenWrt-ipk</a></p>
+<p><a href="swap.txt">swap.txt</a></p>
+<p>上面是笔者按要求编译好的两个 ipk 包，下载后改后缀为 7z 解压就行。</p>
+</blockquote>
+<p>编译过程和 github 仓库的 README 文件以及上方给的博客一模一样，没有任何需要更改的地方，笔者就不复制粘贴了，只有一点需要注意的是，博客中选择编译选项时是 &#x2F;Network&#x2F;Ruijie&#x2F;mentoHUST，但笔者实际操作过程中发现 Ruijie 并不在 Network 下，不过在哪现在也忘了，总之找不到也不要慌，每个都点进去找找看总是能找到的。<br><img src="/2023/03/09/J1900%20First%20Setting/image(1).png" alt="image(1).png"><br><img src="/2023/03/09/J1900%20First%20Setting/image(2).png" alt="image(2).png"><br><img src="/2023/03/09/J1900%20First%20Setting/image(3).png" alt="image(3).png" title="找不到Ruijie目录或者mentoHUST不要慌，挨个点进去看总会找到的"></p>
+<h3 id="mentoHUST-安装"><a href="#mentoHUST-安装" class="headerlink" title="mentoHUST 安装"></a>mentoHUST 安装</h3><p>稀松平常，没有坑。<br>同样进入 192.168.0.1 路由器管理界面，从上边栏进入 &#x2F;系统&#x2F;Software，点击 Upload Package，选中两个 ipk 文件上传就安装上了。<br><img src="/2023/03/09/J1900%20First%20Setting/QQ%E6%88%AA%E5%9B%BE20220325203508.jpg" alt="QQ截图20220325203508.jpg" title="不能说非常简单，只能说毫无难度"></p>
+<h3 id="mentoHUST-使用"><a href="#mentoHUST-使用" class="headerlink" title="mentoHUST 使用"></a>mentoHUST 使用</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br><span class="line">欢迎使用MentoHUST 版本: 0.3.3</span><br><span class="line">Copyright (C) 2009 HustMoon Studio</span><br><span class="line">人到华中大，有甜亦有辣。明德厚学地，求是创新家。</span><br><span class="line">Bug report to</span><br><span class="line">http://code.google.com/p/mentohust/issues/list</span><br><span class="line"></span><br><span class="line">用法: mentohust [-选项][参数]</span><br><span class="line">选项: -h 显示本帮助信息</span><br><span class="line">-k 退出程序</span><br><span class="line">-w 保存参数到配置文件</span><br><span class="line">-u 用户名</span><br><span class="line">-p 密码</span><br><span class="line">-n 网卡名</span><br><span class="line">-i IP[默认本机IP]</span><br><span class="line">-m 子网掩码[默认本机掩码]</span><br><span class="line">-g 网关[默认0.0.0.0]</span><br><span class="line">-s DNS[默认0.0.0.0]</span><br><span class="line">-o Ping主机[默认0.0.0.0，表示关闭该功能]</span><br><span class="line">-t 认证超时(秒)[默认8]</span><br><span class="line">-e 响应间隔(秒)[默认30]</span><br><span class="line">-r 失败等待(秒)[默认15]</span><br><span class="line">-a 组播地址: 0(标准) 1(锐捷) 2(赛尔) [默认0]</span><br><span class="line">-d DHCP方式: 0(不使用) 1(二次认证) 2(认证后) 3(认证前) [默认0]</span><br><span class="line">-b 是否后台运行: 0(否) 1(是，关闭输出) 2(是，保留输出) 3(是，输出到文件) ［默认0］</span><br><span class="line">-y 是否显示通知: 0(否) 1～20(是)[默认5］</span><br><span class="line">-f 自定义数据文件[默认不使用]</span><br><span class="line">-c DHCP脚本[默认dhclient]</span><br><span class="line">+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++</span><br></pre></td></tr></table></figure>
+
+<p>华某科可使用：</p>
+<blockquote>
+<p>mentohust -uusername -ppassword -neth0 -d2 -b2 -w<br>无需指定 ip、dns 等，不如说校园网禁止指定 ip，虽然每次分配的是一样的。同时需加上 -d2 参数，在认证后开启 DHCP，否则也不让连，即使不参考笔者的博客，这些报错信息最终连接一遍都会出现，非常好懂，也很好解决。</p>
+</blockquote>
+<p>然后在路由器管理界面，进入 &#x2F;系统&#x2F;启动项，点击 本地启动脚本，在脚本中输入一句 mentohust 即可。注意，须先用-w 参数将账号密码等保存至配置文件才可以省略参数。<br><img src="/2023/03/09/J1900%20First%20Setting/QQ%E6%88%AA%E5%9B%BE20220325205605.jpg" alt="QQ截图20220325205605.jpg"></p>
+<h2 id="通过-ssh-连接至-J1900-路由器"><a href="#通过-ssh-连接至-J1900-路由器" class="headerlink" title="通过 ssh 连接至 J1900 路由器"></a>通过 ssh 连接至 J1900 路由器</h2><p>进入 192.168.0.1 路由器管理界面，从上边栏进入 &#x2F;系统&#x2F;Software，点击 SSH 访问。<br><img src="/2023/03/09/J1900%20First%20Setting/QQ%E6%88%AA%E5%9B%BE20220325203959.jpg" alt="QQ截图20220325203959.jpg" title="改成这样就好了，也可以监听指定接口限制设备登陆"><br>最后点击<strong>保存并应用</strong>。<br>这一步主要是处理 mentoHUST 在路由器上运行命令行时显示中文乱码，cmd 下中文则会正常显示，当然一般大家买路由器也是没有屏幕的（笔者使用的是之前树莓派遗留下来的屏幕），所以也需要配置 ssh 以访问路由器进行一些操作。</p>
+<p>至此，完结撒花</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://gg2002.github.io">羽殇之舞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://gg2002.github.io/2023/03/09/J1900%20First%20Setting/">http://gg2002.github.io/2023/03/09/J1900%20First%20Setting/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://i.loli.net/2021/02/24/5O1day2nriDzjSu.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">1</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%BD%AF%E8%B7%AF%E7%94%B1%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">1.</span> <span class="toc-text">软路由是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#J1900-%E8%B7%AF%E7%94%B1%E5%99%A8%E4%BB%8B%E7%BB%8D"><span class="toc-number">2.</span> <span class="toc-text">J1900 路由器介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%89%E8%A3%85-openwrt-%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">安装 openwrt 系统</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#openwrt-%E4%B8%8B%E8%BD%BD"><span class="toc-number">3.1.</span> <span class="toc-text">openwrt 下载</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openwrt-%E7%B3%BB%E7%BB%9F%E5%88%BB%E5%BD%95"><span class="toc-number">3.2.</span> <span class="toc-text">openwrt 系统刻录</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#openwrt-%E7%B3%BB%E7%BB%9F%E6%89%A9%E5%AE%B9"><span class="toc-number">3.3.</span> <span class="toc-text">openwrt 系统扩容</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E5%AE%B9%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-number">3.3.1.</span> <span class="toc-text">扩容第一步</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%89%A9%E5%AE%B9%E5%90%8E%E7%BB%AD"><span class="toc-number">3.3.2.</span> <span class="toc-text">扩容后续</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mentoHUST-%E6%8F%92%E4%BB%B6%E7%BC%96%E8%AF%91%E5%8F%8A%E5%85%B6%E5%AE%89%E8%A3%85"><span class="toc-number">4.</span> <span class="toc-text">mentoHUST 插件编译及其安装</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#mentoHUST-%E6%8F%92%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-number">4.1.</span> <span class="toc-text">mentoHUST 插件编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mentoHUST-%E5%AE%89%E8%A3%85"><span class="toc-number">4.2.</span> <span class="toc-text">mentoHUST 安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mentoHUST-%E4%BD%BF%E7%94%A8"><span class="toc-number">4.3.</span> <span class="toc-text">mentoHUST 使用</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E8%BF%87-ssh-%E8%BF%9E%E6%8E%A5%E8%87%B3-J1900-%E8%B7%AF%E7%94%B1%E5%99%A8"><span class="toc-number">5.</span> <span class="toc-text">通过 ssh 连接至 J1900 路由器</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/03/09/J1900%20First%20Setting/" title="记一次折腾J1900软路由的过程">记一次折腾J1900软路由的过程</a><time datetime="2023-03-09T09:54:14.000Z" title="Created 2023-03-09 17:54:14">2023-03-09</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2023 By 羽殇之舞</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
