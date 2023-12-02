@@ -342,8 +342,8 @@ mathjax:
 
 # KaTeX
 katex:
-  enable: false
-  per_page: false
+  enable: true
+  per_page: true
   hide_scrollbar: true
 
 # search (搜索)
