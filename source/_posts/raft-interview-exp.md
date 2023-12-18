@@ -2,16 +2,17 @@
 title: raft面经（？
 date: 2023-12-04 22:56:34
 tags: raft协议
+katex: true
 ---
 按理说，做完了6.824理应对Raft了如指掌，可那是11个月前了，如今的笔者只能依稀记起来lab中印象较深的几个坑（其实也记不太清了。
 
-所以可证明，做完lab$\not=$面经全会。
+所以可证明，做完lab $\not=$ 面经全会。
 
 为了让面试官不阴阳怪气\委婉\盛气凌人地跟笔者说——同学，你的项目是有借鉴Github吗？——记录一下笔者从各大网站搜罗而来的Raft协议面经。
 
 ## CAP 是什么？Raft 实现了 CAP 中的哪两个
 CAP（Consistency, Availability, Partition tolerance）。CA只有单机实现，毕竟分布式系统必须有Partition tolerance。
-![一致性细分类](../img/raft/consistency.jpg)
+![一致性细分类](/img/raft/consistency.jpg)
 
 - 弱一致性——最终一致性（无法实时获取最新更新的数据，但是一段时间过后，数据是一致的）
   - Gossip(Cassandra，Redis的通信协议)
