@@ -5,7 +5,7 @@ tags: database
 ---
 
 近些年兴起的 NewSQL，Google 在2012年发表的Spanner[8]和2013年发表的F1[9]两篇论文，提出将关系模型和NoSQL
-的扩展性相结合，使之既支持关系模型，又具备高可扩展性。Spanner 和 F1 的出现标志着 NewSQL 的兴起，PingCAP 的 TiDB[10]、CockroachLabs 的 CockroachDB[11]和已经闭源的 OceanBase 都是 NewSQL 的典型产品。TiDB和 CockroachDB 底层都是基于 RocksDB[12]实现，而 RocksDB 又是在 LevelDB[13]基础上发展的单机 KV 存储引擎。
+的扩展性相结合，使之既支持关系模型，又具备高可扩展性。Spanner 和 F1 的出现标志着 NewSQL 的兴起，PingCAP 的 TiDB[10]、CockroachLabs 的 CockroachDB[11]和已经闭源的 OceanBase 都是 NewSQL 的典型产品。TiDB 和 CockroachDB 底层都是基于 RocksDB[12]实现，而 RocksDB 又是在 LevelDB[13]基础上发展的单机 KV 存储引擎。
 
 KV 数据库种类繁多，以 DBEngine 上面列出的为例，就包含60多种，虽然种类繁多，但按照其底层的存储模型基本分为四大类，LSM-Tree[14]模型、B/B+Tree 模型、哈希模型和一致性哈希模型。
 
