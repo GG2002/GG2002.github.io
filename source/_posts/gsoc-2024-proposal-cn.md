@@ -1,7 +1,8 @@
 ---
-title: GSOC2024: Proposal-cn
+title: GSOC2024 Proposal-cn
 date: 2024-03-02 00:10:21
 tags: GSOC2024
+katex: true
 ---
 如图所示：
 ![Overlapping rules](/img/gsoc-2024-proposal/Overlapping-rules.png)
