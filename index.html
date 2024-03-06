@@ -8,13 +8,13 @@
 <meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
 <meta property="article:author" content="羽殇之舞">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
   root: '/',
   algolia: undefined,
   localSearch: undefined,
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -35,11 +35,9 @@
   copyright: undefined,
   lightbox: 'fancybox',
   Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
   },
   isPhotoFigcaption: false,
   islazyload: false,
@@ -55,85 +53,78 @@
   isHome: true,
   isHighlightShrink: false,
   isToc: false,
-  postUpdate: '2024-03-02 22:47:54'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
-
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
+  postUpdate: '2024-03-06 10:41:05'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
         }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
         }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
 
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
         }
-        return item.value
-      }
-    }
-  
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
-  
-    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = url
-      if (id) link.id = id
-      link.onerror = reject
-      link.onload = link.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        link.onload = link.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(link)
-    })
-  
-      win.activateDarkMode = function () {
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
         document.documentElement.setAttribute('data-theme', 'dark')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
         }
       }
-      win.activateLightMode = function () {
+      win.activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
@@ -141,9 +132,9 @@
       }
       const t = saveToLocal.get('theme')
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
-        
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
       const asideStatus = saveToLocal.get('aside-status')
       if (asideStatus !== undefined) {
         if (asideStatus === 'hide') {
@@ -153,12 +144,12 @@
         }
       }
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
       }
-    }
-    detectApple()
+      detectApple()
     })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="site-info"><h1 id="site-title">羽殇之舞的个人博客</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2024/03/02/gsoc-2024-proposal/" title="GSOC2024 Proposal">GSOC2024 Proposal</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2024-03-01T16:24:31.000Z" title="发表于 2024-03-02 00:24:31">2024-03-02</time></span></div><div class="content"> Improve Transaction Validation
  Project Info
 
@@ -263,12 +254,32 @@ ZAB
 DP最优，遍历一遍，直观理解是当前序列之和&lt;0就可以从下一个大于0的元素开始继续遍历，转移方程为：
 f(i)=max{f(i−1)+nums[i],nums[i]}f(i)=max\{f(i-1)+nums[i],nums[i]\} 
 f(i)=max{f(i−1)+ ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/11/06/cmu-15445-3/" title="CMU15445 C++学习笔记-其三（Project 2）">CMU15445 C++学习笔记-其三（Project 2）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-11-06T08:42:59.000Z" title="发表于 2023-11-06 16:42:59">2023-11-06</time></span></div><div class="content">array_ 是零长数组，解释参见（https://blog.csdn.net/gatieme/article/details/64131322）初始化的时候在内存里是不占空间的，但是它真正能使用到的空间就是固定的 page 大小减去前面成员变量之后所剩的空间。因为实际上 BUCKET_ARRAY_SIZE 是固定的，为了不使内存溢出，注释也强调了不要在下面再加别的成员了（所以挺困惑我的一点就是既然总的 page 空间大小和数组 size 都定下来了，为什么不直接在初始化的时候就申请那么大的空间呢）
-</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/10/12/cmu-15445-2/" title="CMU15445 C++学习笔记-其二（Project 1）">CMU15445 C++学习笔记-其二（Project 1）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-10-12T13:52:09.000Z" title="发表于 2023-10-12 21:52:09">2023-10-12</time></span></div><div class="content">0.png大力出奇迹，函数大锁。1.png修改了NewPage，在写入Evict的页释放了函数大锁，主要目的是测试bug。2.png在FlushPage的时候释放函数大锁加页锁，在DeletePage写入Delete的页时释放了函数大锁，结果更差了。3.png  &#x2F;&#x2F; 分配一个空闲block；  &#x2F;&#x2F; buf_pool_mutex_enter；  &#x2F;&#x2F; 持有page_hash x lock；  &#x2F;&#x2F; 检查page_hash中是否已被读入，如果是，表示另外一个线程已经完成了io，则忽略本次io请求，退出；  &#x2F;&#x2F; 持有block-&gt;mutex，对block进行初始化，并加入到page hash中；  &#x2F;&#x2F; 设置IO FIX为BUF_IO_READ；  &#x2F;&#x2F; 释放hash lock；  &#x2F;&#x2F; 将block加入到LRU上；  &#x2F;&#x2F; 持有block s lock；  &#x2F;&#x2F; 完成IO后，释放s ...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/09/24/cmu-15445-1/" title="CMU15445 C++学习笔记-其一（Project 0）">CMU15445 C++学习笔记-其一（Project 0）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-09-24T14:03:42.000Z" title="发表于 2023-09-24 22:03:42">2023-09-24</time></span></div><div class="content">换设备了之后hexo源文件丢失了，笔者竟然忘记（没意识到）可以在github仓库里新开一个hexo branch存放源文件。
-前言这篇文章里写好的注册课程提交课程流程笔者就不写了。
-CMU 15-445&#x2F;645 (Spring 2023) Database Systems 通关指北
-笔者想学C++但找不到做完会有成就感的项目所以一直耽搁着没学，Modern C++的名声在外让笔者同样畏惧。虽然笔者看了许多C++的源码也学会了不少语言，但是Modern C++这座大山一直没敢爬，这是本科的情况。
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/10/12/cmu-15445-2/" title="CMU15445 C++学习笔记-其二（Project 1）">CMU15445 C++学习笔记-其二（Project 1）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-10-12T13:52:09.000Z" title="发表于 2023-10-12 21:52:09">2023-10-12</time></span></div><div class="content">0.png
+大力出奇迹，函数大锁。
+1.png
+修改了NewPage，在写入Evict的页释放了函数大锁，主要目的是测试bug。
+2.png
+在FlushPage的时候释放函数大锁加页锁，在DeletePage写入Delete的页时释放了函数大锁，结果更差了。
+3.png
+// 分配一个空闲block；
+// buf_pool_mutex_enter；
+// 持有page_hash x lock；
+// 检查page_hash中是否已被读入，如果是，表示另外一个线程已经完成了io，则忽略本次io请求，退出；
+// 持有block-&gt;mutex，对block进行初始化，并加入到page hash中；
+// 设置IO FIX为BUF_IO_READ；
+// 释放hash lock；
+// 将block加入到LRU上；
+// 持有block s lock；
+// 完成IO后，释放s lock；
+</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/2023/09/24/cmu-15445-1/" title="CMU15445 C++学习笔记-其一（Project 0）">CMU15445 C++学习笔记-其一（Project 0）</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2023-09-24T14:03:42.000Z" title="发表于 2023-09-24 22:03:42">2023-09-24</time></span></div><div class="content">换设备了之后hexo源文件丢失了，笔者竟然忘记（没意识到）可以在github仓库里新开一个hexo branch存放源文件。
+ 前言
+这篇文章里写好的注册课程提交课程流程笔者就不写了。
+CMU 15-445/645 (Spring 2023) Database Systems 通关指北
+笔者想学C但找不到做完会有成就感的项目所以一直耽搁着没学，Modern C的名声在外让笔者同样畏惧。虽然笔者看了许多C的源码也学会了不少语言，但是Modern C这座大山一直没敢爬，这是本科的情况。
 所以，在研究生的第一年，趁还有三年可供摆烂的时间，开始攀登这座大山。
-当头一棒捏
-Project 0笔者做的是2023年Fall的课程，要是笔者能坚持下去的话，大概能和CMU的同学们同一时间完成它。
+ 当头一棒捏
+
+ Project 0
+笔者做的是2023年Fall的课程，要是笔者能坚持下去的话，大概能和CMU的同学们同一时间完成它。
 P0的题目是手写Trie树以及利用Copy-On-Write让Trie树可以同时被多个Reader和一个Writer访问，这个在原理实在算不上难。让笔者头疼的是Modern C++的语法。现记录如下，可供有一点基础（指除编程外的各科目知识）但也不是完全懂的后来者（大家都是半吊子）参考。
-关 ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/02/gsoc-2024-proposal/" title="GSOC2024 Proposal">GSOC2024 Proposal</a><time datetime="2024-03-01T16:24:31.000Z" title="发表于 2024-03-02 00:24:31">2024-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/02/gsoc-2024-proposal-cn/" title="GSOC2024 Proposal-cn">GSOC2024 Proposal-cn</a><time datetime="2024-03-01T16:10:21.000Z" title="发表于 2024-03-02 00:10:21">2024-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/17/db-paper-readnote/" title="Reading Notes for Papers in Databases">Reading Notes for Papers in Databases</a><time datetime="2023-12-17T11:04:47.000Z" title="发表于 2023-12-17 19:04:47">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/14/golang-std-function/" title="golang标准库实现简记">golang标准库实现简记</a><time datetime="2023-12-14T09:03:07.000Z" title="发表于 2023-12-14 17:03:07">2023-12-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/04/single-db-interview-exp/" title="15445面经（？">15445面经（？</a><time datetime="2023-12-04T15:14:26.000Z" title="发表于 2023-12-04 23:14:26">2023-12-04</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">九月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">11</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">17.6k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-03-02T14:47:54.100Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+ 关于TrieN ...</div></div></div><nav id="pagination"><div class="pagination"><span class="page-number current">1</span><a class="page-number" href="/page/2/#content-inner">2</a><a class="extend next" rel="next" href="/page/2/#content-inner"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">11</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">6</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/02/gsoc-2024-proposal/" title="GSOC2024 Proposal">GSOC2024 Proposal</a><time datetime="2024-03-01T16:24:31.000Z" title="发表于 2024-03-02 00:24:31">2024-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/02/gsoc-2024-proposal-cn/" title="GSOC2024 Proposal-cn">GSOC2024 Proposal-cn</a><time datetime="2024-03-01T16:10:21.000Z" title="发表于 2024-03-02 00:10:21">2024-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/17/db-paper-readnote/" title="Reading Notes for Papers in Databases">Reading Notes for Papers in Databases</a><time datetime="2023-12-17T11:04:47.000Z" title="发表于 2023-12-17 19:04:47">2023-12-17</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/14/golang-std-function/" title="golang标准库实现简记">golang标准库实现简记</a><time datetime="2023-12-14T09:03:07.000Z" title="发表于 2023-12-14 17:03:07">2023-12-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/12/04/single-db-interview-exp/" title="15445面经（？">15445面经（？</a><time datetime="2023-12-04T15:14:26.000Z" title="发表于 2023-12-04 23:14:26">2023-12-04</time></div></div></div></div><div class="card-widget card-archives"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2024/03/"><span class="card-archive-list-date">三月 2024</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/12/"><span class="card-archive-list-date">十二月 2023</span><span class="card-archive-list-count">5</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/11/"><span class="card-archive-list-date">十一月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/10/"><span class="card-archive-list-date">十月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2023/09/"><span class="card-archive-list-date">九月 2023</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2021/11/"><span class="card-archive-list-date">十一月 2021</span><span class="card-archive-list-count">1</span></a></li></ul></div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">11</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">17.5k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2024-03-06T02:41:05.290Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
