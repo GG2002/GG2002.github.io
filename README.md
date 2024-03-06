@@ -6,7 +6,14 @@
  git clone --recursive -b hexo git@github.com:GG2002/GG2002.github.io.git personal-page
 ```
 
+## Git clone静态文件以发布
+```
+cd personal-page
+git clone git@github.com:GG2002/GG2002.github.io.git public
+```
+
 ## 配环境
 ```
 npm install -g hexo-cli
+npm install
 ``` 
