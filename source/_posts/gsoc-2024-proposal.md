@@ -115,9 +115,9 @@ However, Xline is still a metadata db and these cases rarely occur. And if such 
 ## Schedule
 If I am accepted to GSoC in this project, I should start work at this from May.1st.
 May 1st - August 26th:
-| Week  | Dates | Work |
-| ----- | ------------------- | -------------------------- |
-|  1-3  | May 1st  - May 26th | Implement interval tree map|
-|  4-7  | May 27th - Jun 23rd | Refactor check_intervals fn|
-|  8-9  | Jun 24th - Jul 7th  | Write unit tests|
-| 10-19 | Jul 8th  - Aug 26th | Final Wrap-ups|
+| Week  | Dates               | Work                        |
+| ----- | ------------------- | --------------------------- |
+| 1-3   | May 1st  - May 26th | Implement interval tree map |
+| 4-7   | May 27th - Jun 23rd | Refactor check_intervals fn |
+| 8-9   | Jun 24th - Jul 7th  | Write unit tests            |
+| 10-19 | Jul 8th  - Aug 26th | Final Wrap-ups              |
