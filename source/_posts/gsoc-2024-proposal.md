@@ -46,8 +46,7 @@ Among these two issues, the more important thing is to ensure the correctness of
 
 ### Design
 Describing the rules for detecting overlapping keys in language seem too cumbersome. So I drew a pricture to explain it：
-![Overlapping rules](/img/gsoc-2024-proposal/Overlapping-rules.png)
-
+![Overlapping rules](https://gg2002.github.io/img/gsoc-2024-proposal/Overlapping-rules.png)
 Given the `put` op of `STxn-0` (Notice,the `put` mentioned here doesn't contain `STxn-0`'s sub-Txns, e.g., `GsTxn-*`'s `put`), it should not intersect with these `del` and `put` marked in red, meanwhile, it could intersect with these `del` and `put` marked in blue in this diagram (it means that these green area should be excluded in the search tree). This is because the semantics of `Then` and `Else` dictate that only one of them will be executed, so even if they overlap, it doesn't matter. 
 
 #### Plan A
@@ -56,7 +55,7 @@ Firstly, consider the intersection problem between `put` and `del`:
 The best way is to build a interval tree containing the entire set of `del`, and then traverse `put` to detect intersection. But as mentioned above, some `del` should be exclued, a interval tree that only contains range is not enough to achieve it, more information needs to be contained.
 
 Actually, the above picture is a little complicated, and the relation between `del` and `put` could be simplified as follows:
-![Overlapping Rules Simplified](/img/gsoc-2024-proposal/Overlapping-rules-simple.png)
+![Overlapping Rules Simplified](https://gg2002.github.io/img/gsoc-2024-proposal/Overlapping-rules-simple.png)
 
 Given the `put` in `Then` branch of `STxn-0`, it still cannot intersect with these red area, but can intersect with these blue area.
 
