@@ -22,21 +22,25 @@ tags: OSPP2024
 
 ## 提案
 ### 相关项目简介
-#### Nebula Graph
-Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数据。其中 vertex 为点，在一般项目中可以是一个人、一篇帖子、一个组织等任意实体；edge 则是点之间的关系，如引用、属于、包含等各种关系；而 tag 则是用来修饰 vertex 的东西，如个人信息，帖子发布信息，组织信息等。从 tag 的角度看，vertex 可以视作为一堆 tag 的集合。
+#### NebulaGraph
+NebulaGraph 是图数据库，其以 vertex，edge 和 tag 的形式存储数据。其中 vertex 为点，在一般项目中可以是一个人、一篇帖子、一个组织等任意实体；edge 则是点之间的关系，如引用、属于、包含等各种关系；而 tag 则是用来修饰 vertex 的东西，如个人信息，帖子发布信息，组织信息等。从 tag 的角度看，vertex 可以视作为一堆 tag 的集合。
 
 图数据库这样做的优点在于灵活性高，支持复杂的图形算法，可用于构建复杂的关系图谱。它可以看作是特化了传统关系型数据库的 JOIN 操作，简化了用户查询实体之间的关系的操作，换言之，图数据库是比关系型数据库更注重**关系**的数据库。
 
-![Nebula Graph 架构图](/img/ospp-2024-proposal/nebula-graph-architecture.png)
-上图是官方的架构图，细节略去不谈，易知 Nebula Graph 由三部分——graphd, metad, storaged 组成。其中 graphd 算是查询引擎，metad 存有服务地址和 Schema 等各类元信息，而 storaged 存储具体的数据。
+![NebulaGraph 架构图](/img/ospp-2024-proposal/nebula-graph-architecture.png)
+上图是官方的架构图，协议与周边生态细节略去不谈，易知 NebulaGraph 由三部分——graphd, metad, storaged 组成。其中 graphd 算是查询引擎，metad 存有服务地址和 Schema 等各类元信息，而 storaged 存储具体的数据。
 
+##### graphd
+NebulaGraph 结合 GQL 自研了 nGQL(nebula graph GQL)。正如各类 SQL 引擎所做的那样，graphd 负责将 nGQL 解析成对底层存储引擎相应的操作，算子合并、下推等优化操作也在这里进行，该部分与本任务关系不大。
 
-
+##### metad 与 storaged
 > Nebula 的 Storage 包含两个部分，一是 meta 相关的存储，我们称之为 Meta Service，另一个是 data 相关的存储，我们称之为 Storage Service。这两个服务是两个独立的进程，数据也完全隔离，当然部署也是分别部署，不过**两者整体架构相差不大**。
 > 
 > https://www.nebula-graph.com.cn/posts/nebula-graph-storage-engine-overview
 
-![Nebula Graph Storage 架构图](/img/ospp-2024-proposal/nebula-graph-storage-arch.png)
+参考官方介绍，metad 与 storaged 在原理架构上并无太大区别，因此可以合并介绍，接下来只介绍 storaged。
+
+![NebulaGraph Storage 架构图](/img/ospp-2024-proposal/nebula-graph-storage-arch.png)
 
 > Storage interface 层
 > 
@@ -50,15 +54,18 @@ Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数�
 >
 > https://docs.nebula-graph.com.cn/3.8.0/1.introduction/3.nebula-graph-architecture/4.storage-service/
 
-storaged 为基于 RocksDB 的分布式存储服务，这点与 TiKV 很像。考虑 OpenDAL 已经实现的 KV Adpater 抽象层，让 Nebula Graph 作为 OpenDAL 的后端理论上是可行的。
+同样参考官方介绍，storaged 为基于 RocksDB 的分布式存储服务，这点与 TiKV 很像。考虑 OpenDAL 已经实现的 KV Adpater 抽象层，让 NebulaGraph 作为 OpenDAL 的后端理论上是可行的。
 
-使用 [nebula-rust](https://github.com/vesoft-inc/nebula-rust/tree/master)  Client 连接 Nebula Graph 有两种方式可选：
-- 使用 nGQL 操作 Nebula Graph。这是最简单的方法，这种方式先请求 graphd 解析 nGQL，然后由 graphd 去请求 metad 和 storaged 获取数据，再返回给用户
+##### Client 连接方式
+既然 NebulaGraph 提供了 3 个独立部署的 server，那么 Client 直连 storaged 也应是可行的。官方提供了各种语言版本的 Client，其中 [nebula-python](https://github.com/vesoft-inc/nebula-python) 与 [nebula-rust](https://github.com/vesoft-inc/nebula-rust) 都提供了该项功能。
+
+使用 nebula-rust Client 连接 NebulaGraph 有两种方式可选：
+- 使用 nGQL 操作 NebulaGraph。这是最简单的方法，这种方式先将带 nGQL 的请求发送给 graphd，然后由 graphd 去分别请求 metad 和 storaged 获取数据，再返回给用户
 - 直连 storaged。考虑到一些简单的、大批量的操作并没有必要经过 graphd 这个中转站再传给 storaged 去做，用户也可以直连 storaged 获取 vertex 与 edge
 
 这两种方法各有优劣：
 - 使用 nGQL 操作固然方便，但要是 graphd 和 metad、storaged 不在一个服务器上，再简单的操作也要多出一段时延。
-- 直连 storaged 固然能减少时延，但对于 Nebula Graph 用户而言，metad 与 storaged 很多时候都是不对外暴露服务的，参考 [Should I use graphd-client or storaged-client?](https://github.com/vesoft-inc/nebula-rust/issues/20)，而且 nGQL 能实现的各种基于图的算法肯定是用不了了
+- 直连 storaged 固然能减少时延，但对于 NebulaGraph 用户而言，metad 与 storaged 很多时候都是不对外暴露服务的，参考 [Should I use graphd-client or storaged-client?](https://github.com/vesoft-inc/nebula-rust/issues/20)，而且 nGQL 能实现的各种基于图的算法肯定是用不了了
 
 #### OpenDAL
 要给 OpenDAL 新增 Service，最低要求是为新增的 Service 实现位于 `core/src/raw` 下的 `Access trait` 和 `Builder trait` 。
@@ -91,21 +98,21 @@ FETCH PROP ON kv "test" YIELD kv.value as value;
 DELETE VERTEX "test";
 ```
 
-同时参考 Nebula Graph 源码解读系列文章，可以知道 vertex 和 tag 属性在底层都是存在 RocksDB 中：
+同时参考 NebulaGraph 源码解读系列文章，可以知道 vertex 和 tag 属性在底层都是存在 RocksDB 中：
 > 数据分片 Partition 或者有些系统叫 Shard，它的 ID 是怎么得到？非常简单，根据点的 ID 做 Hash，然后取模 partition 数量，就得到了 PartitionID。
 > 
 > Vertex 的 Key 是由 PartID + VID + TagID 三元组构成的，Value 里面存放的是属性（Property），这些属性是一系列 KV 对的序列化。
 > 
 > https://www.nebula-graph.com.cn/posts/nebula-graph-design-in-practice
 
-虽然 Nebula Graph 会将 vertex 和 tag 存在两个地方，而不是像真正的 KV DB 一样存真正的 key-value 对，而且在存入之前还要经过 Raft 共识算法达成共识，性能相对于 RocksDB 一定有很多损失，但这是无法避免的事。
+虽然 NebulaGraph 会将 vertex 和 tag 存在两个地方，而不是像真正的 KV DB 一样存真正的 key-value 对，而且在存入之前还要经过 Raft 共识算法达成共识，性能相对于 RocksDB 一定有很多损失，但这是无法避免的事。
 
 这样做的优势是显而易见的：
 1. 只插入 vertex，充分利用了 RocksDB，性能有保证
 2. 由于操作简单，在查询获取文件的时候可以直接访问 storaged 服务，省去通过 graphd 访问 storaged 的过程，性能会进一步提升
 
 但这样做的缺点也是显然的：
-1. 由于 Nebula Graph 只能设置 VID 为固定长度字符串，要满足文件系统的需求则需要将这个固定长度设置为一个很大的数字（参考文件名最大长度 255），这将大幅度降低 Nebula Graph 的性能
+1. 由于 NebulaGraph 只能设置 VID 为固定长度字符串，要满足文件系统的需求则需要将这个固定长度设置为一个很大的数字（参考文件名最大长度 255），这将大幅度降低 NebulaGraph 的性能
 2. `create_dir` 可以理论上支持，但考虑第 2 点，即使约束文件名不超过 n (n<<255) 个字符，目录深度也会受到极大限制，而且处理 corner case 会很繁琐
 3. `list` 不可能得到支持，因为使用了 vertex 的 VID 作为 key，但 nGQL 并没有提供 **搜索 以 xxxx 为前缀 的 VID 的 vertex** 的功能
 4. `append`，`rename` 和 `copy` 操作性能会有问题，语义上实现这两个操作倒是简单，无非是先查再更新，但是性能肯定不佳，同时 nGQL 也不可能有原生的功能支持
@@ -113,7 +120,7 @@ DELETE VERTEX "test";
 
 #### 方案 B
 
-要将 DB 添加为 OpenDAL 的 Backend，本质上是使用这个 DB 去模拟一个文件系统树。众所周知树结构是图的子集，对于 Nebula Graph，其可以直接把文件树结构存进去而不需要任何额外的抽象。
+要将 DB 添加为 OpenDAL 的 Backend，本质上是使用这个 DB 去模拟一个文件系统树。众所周知树结构是图的子集，对于 NebulaGraph，其可以直接把文件树结构存进去而不需要任何额外的抽象。
 
 首先需要创建一个合适的 space
 1. 创建测试用 space，为了解决 VID 作为文件绝对路径的性能问题，可以选择使用 INT 作为 VID，将真正的文件名存入 tag 中
@@ -199,13 +206,18 @@ DELETE VERTEX "test";
 因为原理一样，这里的 nGQL 操作就略去不写。
 
 ### 方案总体评价
-实际上对方案 A, B, C 的选择就是对功能与性能的取舍，在进行 benchmark test 前，我是更加倾向于选择方案 B 的，因为将文件树映射为图确实更富有挑战一些。
+实际上对方案 A, B, C 的选择就是对功能与性能的取舍，在进行 benchmark test 前，我是更加倾向于选择方案 B 的，因为将文件树映射为图显然更富有挑战一些。
+
+> Nebula Graph 基于图数据库的特性使用 C++ 编写的 NebulaGraph，可以提供毫秒级查询。
+>
+> https://docs.nebula-graph.com.cn/3.8.0/1.introduction/1.what-is-nebula-graph/
+
+参考官方文档，NebulaGraph 提供的是毫秒级的查询，考虑即使是方案 A，提升的性能也不会太多，因为上限就在那。而且考虑到 OpenDAL 本身也支持了 RocksDB，这样隔着 NebulaGraph 访问 RocksDB 的行为可能显得有些意义不明。
 
 而且我认为方案 B 在一些场景下有显著优势：
-1. Nebula Graph 作为网络服务提供，那么方案 A 多的那点性能在网络时延面前显得不值一提
+1. NebulaGraph 作为网络服务提供，那么方案 A 多的那点性能在网络时延面前显得不值一提
 2. 必须要支持长文件名、很深的目录层数以及 `list` 操作
-
-方案 A 虽然实现简单，性能有保证，但是考虑到 OpenDAL 本身也支持了 RocksDB，这样隔着 Nebula Graph 访问 RocksDB 的行为可能显得有些意义不明。
+3. 性能不敏感场景，不需要高吞吐量的文件系统，那么自然文件系统功能越全越好
 
 ## 计划表
 参照官方日程表，如果我被选中，我将在 07/01-09/30 期间进行开发：
