@@ -23,10 +23,34 @@ tags: OSPP2024
 ## 提案
 ### 相关项目简介
 #### Nebula Graph
-Nebula Graph 是图数据库。图数据库有 vertex 和 edge 的概念，这与传统关系型数据库以及 KV DB 不同，但从底层实现来看，这些属性也是存在 KV DB 中的，因此理论上让 Nebula Graph 作为 OpenDAL 的后端是可行的。
+Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数据。其中 vertex 为点，在一般项目中可以是一个人、一篇帖子、一个组织等任意实体；edge 则是点之间的关系，如引用、属于、包含等各种关系；而 tag 则是用来修饰 vertex 的东西，如个人信息，帖子发布信息，组织信息等。从 tag 的角度看，vertex 可以视作为一堆 tag 的集合。
+
+图数据库这样做的优点在于灵活性高，支持复杂的图形算法，可用于构建复杂的关系图谱。它可以看作是特化了传统关系型数据库的 JOIN 操作，简化了用户查询实体之间的关系的操作，换言之，图数据库是比关系型数据库更注重**关系**的数据库。
 
 ![Nebula Graph 架构图](/img/ospp-2024-proposal/nebula-graph-architecture.png)
 上图是官方的架构图，细节略去不谈，易知 Nebula Graph 由三部分——graphd, metad, storaged 组成。其中 graphd 算是查询引擎，metad 存有服务地址和 Schema 等各类元信息，而 storaged 存储具体的数据。
+
+
+
+> Nebula 的 Storage 包含两个部分，一是 meta 相关的存储，我们称之为 Meta Service，另一个是 data 相关的存储，我们称之为 Storage Service。这两个服务是两个独立的进程，数据也完全隔离，当然部署也是分别部署，不过**两者整体架构相差不大**。
+> 
+> https://www.nebula-graph.com.cn/posts/nebula-graph-storage-engine-overview
+
+![Nebula Graph Storage 架构图](/img/ospp-2024-proposal/nebula-graph-storage-arch.png)
+
+> Storage interface 层
+> 
+> Storage 服务的最上层，定义了一系列和图相关的 API。API 请求会在这一层被翻译成一组针对分片的 KV 操作，例如：
+> 
+> - getNeighbors：查询一批点的出边或者入边，返回边以及对应的属性，并且支持条件过滤。
+> - insert vertex/edge：插入一条点或者边及其属性。
+> - getProps：获取一个点或者一条边的属性。
+> 
+> **正是这一层的存在，使得 Storage 服务变成了真正的图存储，否则 Storage 服务只是一个 KV 存储服务。**
+>
+> https://docs.nebula-graph.com.cn/3.8.0/1.introduction/3.nebula-graph-architecture/4.storage-service/
+
+storaged 为基于 RocksDB 的分布式存储服务，这点与 TiKV 很像。考虑 OpenDAL 已经实现的 KV Adpater 抽象层，让 Nebula Graph 作为 OpenDAL 的后端理论上是可行的。
 
 使用 [nebula-rust](https://github.com/vesoft-inc/nebula-rust/tree/master)  Client 连接 Nebula Graph 有两种方式可选：
 - 使用 nGQL 操作 Nebula Graph。这是最简单的方法，这种方式先请求 graphd 解析 nGQL，然后由 graphd 去请求 metad 和 storaged 获取数据，再返回给用户
