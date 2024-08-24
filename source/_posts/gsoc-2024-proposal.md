@@ -45,7 +45,7 @@ Now, there's several problems with the Txn Validation function that need to be s
 Among these two issues, the more important thing is to ensure the correctness of check_intervals fn. But ensuring the correctness will lead to an increase in time complexity in my proposal, a interval tree is also neccessary.
 
 ### Design
-Describing the rules for detecting overlapping keys in language seem too cumbersome. So I drew a pricture to explain it：
+Describing the rules for detecting overlapping keys in language seem too cumbersome. So I drew a pricture to explain it:
 ![Overlapping rules](https://gg2002.github.io/img/gsoc-2024-proposal/Overlapping-rules.png)
 Given the `put` op of `STxn-0` (Notice,the `put` mentioned here doesn't contain `STxn-0`'s sub-Txns, e.g., `GsTxn-*`'s `put`), it should not intersect with these `del` and `put` marked in red, meanwhile, it could intersect with these `del` and `put` marked in blue in this diagram (it means that these green area should be excluded in the search tree). This is because the semantics of `Then` and `Else` dictate that only one of them will be executed, so even if they overlap, it doesn't matter. 
 

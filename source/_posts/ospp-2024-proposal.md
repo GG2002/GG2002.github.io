@@ -38,8 +38,7 @@ tags: OSPP2024
 同时我也对数据库领域相关技术很有兴趣，我独立完成了 CMU-15445、MIT 6.824 和 PingCAP 发起的 TinyKV 项目，对分布式数据库技术以及 SQL 执行引擎都有了一定程度上的了解，相信这点在我熟悉 NebulaGraph 以及 OpenDAL 的过程中会起到非常大的帮助。
 
 ## 项目介绍
-- Repo: [apache/opendal](https://github.com/apache/opendal)
-- 相关 issue: 
+相关 issue：
   - [Add support for NebulaGraph](https://github.com/apache/opendal/issues/4553)
     
     该 issue 提出希望为 OpenDAL 添加对 NebulaGraph 的支持以便用户可以通过 OpenDAL 访问 NebulaGraph 并存储数据。
@@ -50,13 +49,12 @@ tags: OSPP2024
     let bs = op.read("path/to/file").await?;
     ```
 
-### 涉及项目简介
-#### OpenDAL
+### [OpenDAL](https://github.com/apache/opendal) 简介
 要给 OpenDAL 新增 Service，最低要求是为新增的 Service 实现位于 `core/src/raw` 下的 `Access trait` 和 `Builder trait` 。
 
 而要新增 DB Service 则简单不少，因为 OpenDAL 定义了 `Adapter trait`，实现这个 `trait` 就可以让 OpenDAL 使用任何 KV 工作。因此，只要将各类 DB 的操作映射为 KV DB 的操作——`set`, `get`, `delete`, `scan`，OpenDAL 就可以使用这个 DB 了。
 
-#### Nebula Graph
+### [NebulaGraph](https://github.com/vesoft-inc/nebula) 简介
 Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数据。其中 vertex 为点，在一般项目中可以是一个人、一篇帖子、一个组织等任意实体；edge 则是点之间的关系，如引用、属于、包含等各种关系；而 tag 则是用来修饰 vertex 的东西，如个人信息，帖子发布信息，组织信息等。从 tag 的角度看，vertex 可以视作为一堆 tag 的集合。
 
 图数据库这样做的优点在于灵活性高，支持复杂的图形算法，可用于构建复杂的关系图谱。它可以看作是特化了传统关系型数据库的 JOIN 操作，简化了用户查询实体之间的关系的操作，换言之，图数据库是比关系型数据库更注重**关系**的数据库。
@@ -64,10 +62,10 @@ Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数�
 ![NebulaGraph 架构图](/img/ospp-2024-proposal/nebula-graph-architecture.png)
 上图是官方的架构图，协议与周边生态细节略去不谈，易知 NebulaGraph 由三部分——graphd, metad, storaged 组成。其中 graphd 算是查询引擎，metad 存有服务地址和 Schema 等各类元信息，而 storaged 存储具体的数据。
 
-##### graphd
+#### graphd
 NebulaGraph 结合 GQL 自研了 nGQL(nebula graph GQL)。正如各类 SQL 引擎所做的那样，graphd 负责将 nGQL 解析成对底层存储引擎相应的操作，算子合并、下推等优化操作也在这里进行，该部分与本任务关系不大。
 
-##### metad 与 storaged
+#### metad 与 storaged
 > Nebula 的 Storage 包含两个部分，一是 meta 相关的存储，我们称之为 Meta Service，另一个是 data 相关的存储，我们称之为 Storage Service。这两个服务是两个独立的进程，数据也完全隔离，当然部署也是分别部署，不过**两者整体架构相差不大**。
 > 
 > https://www.nebula-graph.com.cn/posts/nebula-graph-storage-engine-overview
@@ -88,9 +86,9 @@ NebulaGraph 结合 GQL 自研了 nGQL(nebula graph GQL)。正如各类 SQL 引�
 >
 > https://docs.nebula-graph.com.cn/3.8.0/1.introduction/3.nebula-graph-architecture/4.storage-service/
 
-同样参考官方介绍，storaged 为基于 RocksDB 的分布式存储服务，这点与 TiKV 很像。考虑 OpenDAL 已经实现的 KV Adpater 抽象层，让 NebulaGraph 作为 OpenDAL 的后端理论上是可行的。
+同样参考官方介绍，storaged 为基于 RocksDB 的分布式存储服务，这点与 TiKV 很像。
 
-##### Client 连接方式
+#### Client 连接方式
 既然 NebulaGraph 提供了 3 个独立部署的 server，那么 Client 直连 storaged 也应是可行的。官方提供了各种语言版本的 Client，其中 [nebula-python](https://github.com/vesoft-inc/nebula-python) 与 [nebula-rust](https://github.com/vesoft-inc/nebula-rust) 都提供了该项功能。
 
 使用 nebula-rust Client 连接 NebulaGraph 有两种方式可选：
