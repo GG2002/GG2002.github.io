@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>GSOC2024 Proposal-cn | 羽殇之舞的个人博客</title><meta name="author" content="羽殇之舞"><meta name="copyright" content="羽殇之舞"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="如图所示：  考虑STxn-0的put操作（注意，这里的put并不包括STxn-0的子事务如GsTxn-*的put操作），它不应该与图中标为红色的del与put相交，同时，它又可以与图中标为蓝色的del与put相交（换言之，这些背景是绿色的区域需要被排除）。这是因为Then和Else的语义注定了这两个分支只会选择一个执行，所以即使它们重叠了也无所谓。  方案一 首先考虑put与del相交的问题：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GSOC2024 Proposal-cn">
+<meta property="og:url" content="http://gg2002.github.io/2024/03/01/gsoc-2024-proposal-cn/index.html">
+<meta property="og:site_name" content="羽殇之舞的个人博客">
+<meta property="og:description" content="如图所示：  考虑STxn-0的put操作（注意，这里的put并不包括STxn-0的子事务如GsTxn-*的put操作），它不应该与图中标为红色的del与put相交，同时，它又可以与图中标为蓝色的del与put相交（换言之，这些背景是绿色的区域需要被排除）。这是因为Then和Else的语义注定了这两个分支只会选择一个执行，所以即使它们重叠了也无所谓。  方案一 首先考虑put与del相交的问题：">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2024-03-01T16:10:21.000Z">
+<meta property="article:modified_time" content="2024-08-24T15:23:09.354Z">
+<meta property="article:author" content="羽殇之舞">
+<meta property="article:tag" content="GSOC2024">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/2024/03/01/gsoc-2024-proposal-cn/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'GSOC2024 Proposal-cn',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-08-24 23:23:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">GSOC2024 Proposal-cn</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-01T16:10:21.000Z" title="发表于 2024-03-02 00:10:21">2024-03-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-08-24T15:23:09.354Z" title="更新于 2024-08-24 23:23:09">2024-08-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.8k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="GSOC2024 Proposal-cn"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>如图所示：<br />
+<img src="/img/gsoc-2024-proposal/Overlapping-rules.png" alt="Overlapping rules" /></p>
+<p>考虑<code>STxn-0</code>的<code>put</code>操作（注意，这里的<code>put</code>并不包括<code>STxn-0</code>的子事务如<code>GsTxn-*</code>的<code>put</code>操作），它不应该与图中标为红色的<code>del</code>与<code>put</code>相交，同时，它又可以与图中标为蓝色的<code>del</code>与<code>put</code>相交（换言之，这些背景是绿色的区域需要被排除）。这是因为<code>Then</code>和<code>Else</code>的语义注定了这两个分支只会选择一个执行，所以即使它们重叠了也无所谓。</p>
+<h3 id="方案一"><a class="markdownIt-Anchor" href="#方案一"></a> 方案一</h3>
+<p>首先考虑<code>put</code>与<code>del</code>相交的问题：</p>
+<p>最好的办法莫过于构筑一棵包含了所有的<code>del</code>的区间树，然后遍历<code>put</code>进行查询。但如上所说，有一些<code>del</code>是需要被排除的，若是只存区间而不存事务间的父子兄弟关系，这将无法识别该排除什么。考虑到 Xline 作为一个 metadata 数据库，他的事务不应该有很多的嵌套结构以及很多的子事务，使用额外空间存一些信息是应当被允许的。</p>
+<p>上面那张图有些复杂，实际上<code>put</code>与<code>del</code>的父子兄弟关系可以简化如下图：<br />
+<img src="/img/gsoc-2024-proposal/Overlapping-rules-simple.png" alt="Overlapping Rules Simplified" /></p>
+<p>考虑属于<code>STxn-0</code>的<code>Then</code>分支的<code>put</code>，它仍然不能与红色区域内的<code>del</code>相交，但可以与蓝色区域的<code>del</code>相交。</p>
+<p>笔者需要解释一下为什么可以这么简化：</p>
+<ul>
+<li>目前只考虑<code>del</code>，因此，其他的<code>put</code>就可以先隐藏掉，同时<code>*Txn List</code>也可以省略掉了</li>
+<li><code>Then</code>与<code>Else</code>本身包含<code>del</code>，因此它们会有颜色</li>
+<li>而对于<code>GsTxn-*</code>这类事务节点，由于无论是它们的<code>Then</code>分支还是<code>Else</code>分支，要么全可以，要么全不可以与<code>put</code>相交，因此它们可以直接涂成红/蓝色</li>
+<li>紫色节点只是笔者为了画面和谐涂上去的，因为<code>红+蓝=紫</code>。也代表该节点的<code>Then</code>和<code>Else</code>需要分开处理</li>
+</ul>
+<p>那么显然这就是一颗多叉树。先考虑直接对其进行编码。比如，以节点在其父节点的<code>Txn List</code>的顺序依次编号<code>0,1,2...</code>，然后<code>Then</code>和<code>Else</code>分别为<code>0</code>和<code>1</code>。对于属于<code>STxn-0</code>的<code>Then</code>分支的<code>put</code>来说，它的编码就是<code>00 00</code>，而对于属于<code>FatherTxn-Then-(STxn-0)-Else-(GsTxn-1)-Then</code>的<code>del</code>来说，它的编码就是<code>00 01 10</code>。</p>
+<p>举几个具体的例子：</p>
+<ul>
+<li>对于编码为<code>00 00</code>的<code>put</code>，其应当排除的编码集合是[<code>01 *</code>, <code>00 01 *</code>]，其中<code>*</code>代表任意编码。</li>
+<li>对于编码为<code>01 20 11</code>的<code>put</code>，其应当排除的编码集合是[<code>00 *</code>, <code>01 21 *</code>, <code>01 20 10 *</code>]。</li>
+</ul>
+<p>那么完全可以总结出一条规则：求<code>put</code>与<code>del</code>的 LCA 节点，该节点若是<code>*Txn*</code>这类节点，则<code>put</code>与<code>del</code>不相交；若是<code>Then</code>或者<code>Else</code>节点，那么<code>put</code>与<code>del</code>相交。</p>
+<p>再进一步，考虑建一颗多叉树，<code>FatherTxn</code>作为<code>root</code>节点，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>p</mi><mi>t</mi><mi>h</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">depth=0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">p</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>。则易知：当 LCA 节点的<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>p</mi><mi>t</mi><mi>h</mi><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">depth\%2==0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.94444em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">p</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord">%</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">0</span></span></span></span>时，则<code>put</code>与<code>del</code>不相交；当<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>p</mi><mi>t</mi><mi>h</mi><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">depth\%2==1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.94444em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">p</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span><span class="mord">%</span><span class="mord">2</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span></span><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span></span></span></span>时，那么<code>put</code>与<code>del</code>相交。</p>
+<p>那么判断<code>put</code>与<code>del</code>相交的步骤就可以确定了，如下：</p>
+<ol>
+<li>构建一棵全局的区间树数据结构。这个数据结构应有以下的性质：
+<ul>
+<li>该区间树可以存（Range，Value）二元组，Value 可以是多叉树的路径编码，也可以是一个多叉树节点的引用</li>
+<li>该区间树插入（RangeA，Value1）和（RangeA，Value2）两个区间后，查询的时候应返回[Value1,Value2]两个值，因为不同子事务之间可能会有一模一样的区间，这两个区间的编码信息不应该被覆盖。</li>
+</ul>
+</li>
+<li>开始递归的遍历各个子事务的各分支的<code>put</code>数组。对于每个<code>put</code>，查询<code>del</code>区间树，遍历查询到的区间集合根据上述的 LCA 或路径编码进行重叠检测。</li>
+</ol>
+<p>现在考虑<code>put</code>之间相交的问题：</p>
+<p>对于<code>put</code>来说，由于它是一堆点的集合，用 hashmap 构建重叠检测会更快一些。而且它们不需要担心顺序问题，完全可以在判断<code>put</code>和<code>del</code>相交的第二步，即递归遍历<code>put</code>数组的时候一起进行。</p>
+<h3 id="方案二"><a class="markdownIt-Anchor" href="#方案二"></a> 方案二</h3>
+<p>若是想少一些空间复杂度，应当有很多方法。比如，在递归地收集<code>del</code>的过程中，考虑直接进行重叠检测，笔者的简要思路如下：</p>
+<ol>
+<li>若是递归遍历到最底层的<code>*Txn*</code>。应确保它的<code>Then</code>和<code>Else</code>分支一定可以通过重叠检测，然后将这两个分支的<code>del</code>和<code>put</code>合成一个<code>del</code>和<code>put</code></li>
+<li>然后两两比较与该<code>*Txn*</code>的处于同一级的其他<code>*Txn*</code>的<code>del</code>和<code>put</code>，注意到，这些<code>*Txn*</code>又处于它们父事务的<code>Then</code>或<code>Else</code>分支，因此可以跳回 1</li>
+</ol>
+<p>细节不再阐述，像这样做的话，由于单独处理了<code>Then</code>和<code>Else</code>分支，所以不再需要记录这些事务的父子兄弟关系。</p>
+<h3 id="方案优劣比较"><a class="markdownIt-Anchor" href="#方案优劣比较"></a> 方案优劣比较</h3>
+<p>这两个方案用了很经典的时空复杂度互换的思想。</p>
+<ul>
+<li>方案一增加了额外的空间复杂度，大致计算就是多用了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>8</mn><mo>∗</mo><mi>N</mi><mi>u</mi><msub><mi>m</mi><mrow><mi>d</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">8*Num_{del}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">8</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>字节，<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>u</mi><msub><mi>m</mi><mrow><mi>d</mi><mi>e</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Num_{del}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.83333em;vertical-align:-0.15em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">m</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.33610799999999996em;"><span style="top:-2.5500000000000003em;margin-left:0em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight" style="margin-right:0.01968em;">l</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.15em;"><span></span></span></span></span></span></span></span></span></span>是<code>del</code>中所有区间的总数。假如想更快一点，可以再建一颗子节点指向父节点以及记录了<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>e</mi><mi>p</mi><mi>t</mi><mi>h</mi></mrow><annotation encoding="application/x-tex">depth</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal">d</span><span class="mord mathnormal">e</span><span class="mord mathnormal">p</span><span class="mord mathnormal">t</span><span class="mord mathnormal">h</span></span></span></span>信息的多叉树。</li>
+<li>方案二不希望记录这些关系，结果就是时间复杂度的增加。对于每个<code>*Txn*</code>，它需要首先对自己的<code>del</code>建一颗区间树，然后要合并它所有子事务创建的区间树。而且，当它两两比较同级的<code>del</code>时，本质上是在<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathnormal">n</span></span></span></span>棵小区间树上搜索，时间复杂度也会大于在一颗包含所有<code>del</code>的大区间树上搜索的时间复杂度。</li>
+</ul>
+<p>笔者更倾向于使用第一种方案。因为 Xline 是一个 metadata 数据库，如前所述，他们不应该有很复杂的事务结构。方案一的空间复杂度实际由事务总数和<code>del</code>总数决定，<code>del</code>总数还可以通过区间合并减少一些。所以它的空间复杂度在可控的范围。</p>
+<p>考虑方案一的极端情况下（实际上也是区间树的极端情况），遍历<code>put</code>一个值时查询到了非常多的<code>del</code>区间，无论最终重没重叠，这时都要一个一个的遍历这些区间判断是否重叠，即使区间树查询是<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><mi>g</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">logN</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathnormal" style="margin-right:0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord mathnormal" style="margin-right:0.03588em;">g</span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>的时间复杂度，整个流程的时间复杂度此时会无限趋于<span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathnormal" style="margin-right:0.10903em;">N</span></span></span></span>。方案二则不会有这种情况，它单独处理了<code>Then</code>和<code>Else</code>分支，对于两两比较的场景，只要查询到任意区间，这都意味着重叠发生，可以返回<code>DuplicatedKeyError</code>了。</p>
+<p>但是 Xline 仍然是一个 metadata 数据库，要是出现这种极端情况，笔者认为这应当是事务创建者的问题，而非 Xline 需要处理好的事。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://gg2002.github.io">羽殇之舞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://gg2002.github.io/2024/03/01/gsoc-2024-proposal-cn/">http://gg2002.github.io/2024/03/01/gsoc-2024-proposal-cn/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://gg2002.github.io" target="_blank">羽殇之舞的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/GSOC2024/">GSOC2024</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2024/03/01/gsoc-2024-proposal/" title="GSOC2024 Proposal"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">GSOC2024 Proposal</div></div></a></div><div class="next-post pull-right"><a href="/2023/12/17/db-paper-readnote/" title="Reading Notes for Papers in Databases"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Reading Notes for Papers in Databases</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2024/03/01/gsoc-2024-proposal/" title="GSOC2024 Proposal"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-03-02</div><div class="title">GSOC2024 Proposal</div></div></a></div><div><a href="/2024/08/24/gsoc-2024-completion-record/" title="GSOC2024 Completion Record with Reflections"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2024-08-25</div><div class="title">GSOC2024 Completion Record with Reflections</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">14</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">8</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%B8%80"><span class="toc-number">1.</span> <span class="toc-text"> 方案一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BA%8C"><span class="toc-number">2.</span> <span class="toc-text"> 方案二</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%B9%E6%A1%88%E4%BC%98%E5%8A%A3%E6%AF%94%E8%BE%83"><span class="toc-number">3.</span> <span class="toc-text"> 方案优劣比较</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/08/24/gsoc-2024-completion-record/" title="GSOC2024 Completion Record with Reflections">GSOC2024 Completion Record with Reflections</a><time datetime="2024-08-24T16:10:21.000Z" title="发表于 2024-08-25 00:10:21">2024-08-25</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/06/14/nas-tool/" title="Nas 自动化追番系统搭建">Nas 自动化追番系统搭建</a><time datetime="2024-06-14T13:41:20.000Z" title="发表于 2024-06-14 21:41:20">2024-06-14</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/05/10/ospp-2024-proposal/" title="OSPP2024 Proposal">OSPP2024 Proposal</a><time datetime="2024-05-10T14:11:51.000Z" title="发表于 2024-05-10 22:11:51">2024-05-10</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/01/gsoc-2024-proposal/" title="GSOC2024 Proposal">GSOC2024 Proposal</a><time datetime="2024-03-01T16:24:31.000Z" title="发表于 2024-03-02 00:24:31">2024-03-02</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/01/gsoc-2024-proposal-cn/" title="GSOC2024 Proposal-cn">GSOC2024 Proposal-cn</a><time datetime="2024-03-01T16:10:21.000Z" title="发表于 2024-03-02 00:10:21">2024-03-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2024 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css"><script src="https://cdn.jsdelivr.net/npm/katex/dist/contrib/copy-tex.min.js"></script><script>(() => {
+  document.querySelectorAll('#article-container span.katex-display').forEach(item => {
+    btf.wrap(item, 'div', { class: 'katex-wrap'})
+  })
+})()</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
