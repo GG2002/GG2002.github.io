@@ -1,7 +1,9 @@
 ---
 title: raft 面经（？
 date: 2023-12-04 22:56:34
-tags: raft 协议
+tags:
+  - Raft
+  - Database
 katex: true
 ---
 按理说，做完了 6.824 理应对 Raft 了如指掌，可那是 11 个月前了，如今的笔者只能依稀记起来 lab 中印象较深的几个坑（其实也记不太清了。
