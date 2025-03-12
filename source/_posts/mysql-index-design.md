@@ -2,6 +2,7 @@
 title: mysql-index-design
 date: 2024-09-02 09:26:15
 tags:
+  - Database
 ---
 
 https://opensource.actionsky.com/20201111-mysql/

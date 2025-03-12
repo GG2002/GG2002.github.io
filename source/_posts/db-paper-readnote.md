@@ -1,7 +1,7 @@
 ---
 title: Reading Notes for Papers in Databases
 date: 2023-12-17 19:04:47
-tags: database
+tags: Database
 ---
 
 近些年兴起的 NewSQL，Google 在 2012 年发表的 Spanner[8]和 2013 年发表的 F1[9]两篇论文，提出将关系模型和 NoSQL
