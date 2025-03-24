@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>少量计网面经 | 羽殇之舞的个人博客</title><meta name="author" content="羽殇之舞"><meta name="copyright" content="羽殇之舞"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="假设在无线网条件下，网络比较拥堵，你会选择 TCP 还是 UDP 通信 在无线网络条件下，如果网络比较拥堵，选择 TCP 还是 UDP 通信取决于你的应用场景和需求。   TCP（传输控制协议）：TCP 是一种面向连接的、可靠的传输层协议。它提供了确认机制、重传机制以及流量控制和拥塞控制，确保数据能够准确无误地到达目的地。在网络拥堵的情况下，TCP 会通过其内置的拥塞控制算法来降低发送速率，从而">
+<meta property="og:type" content="article">
+<meta property="og:title" content="少量计网面经">
+<meta property="og:url" content="http://gg2002.github.io/2025/03/20/interview-computer-network/index.html">
+<meta property="og:site_name" content="羽殇之舞的个人博客">
+<meta property="og:description" content="假设在无线网条件下，网络比较拥堵，你会选择 TCP 还是 UDP 通信 在无线网络条件下，如果网络比较拥堵，选择 TCP 还是 UDP 通信取决于你的应用场景和需求。   TCP（传输控制协议）：TCP 是一种面向连接的、可靠的传输层协议。它提供了确认机制、重传机制以及流量控制和拥塞控制，确保数据能够准确无误地到达目的地。在网络拥堵的情况下，TCP 会通过其内置的拥塞控制算法来降低发送速率，从而">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
+<meta property="article:published_time" content="2025-03-20T05:26:42.000Z">
+<meta property="article:modified_time" content="2025-03-24T14:14:26.017Z">
+<meta property="article:author" content="羽殇之舞">
+<meta property="article:tag" content="面经">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/2025/03/20/interview-computer-network/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '少量计网面经',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2025-03-24 22:14:26'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
+      const link = document.createElement('link')
+      link.rel = 'stylesheet'
+      link.href = url
+      if (id) link.id = id
+      link.onerror = reject
+      link.onload = link.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        link.onload = link.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(link)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">少量计网面经</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-20T05:26:42.000Z" title="发表于 2025-03-20 13:26:42">2025-03-20</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-03-24T14:14:26.017Z" title="更新于 2025-03-24 22:14:26">2025-03-24</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="少量计网面经"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="假设在无线网条件下网络比较拥堵你会选择-tcp-还是-udp-通信"><a class="markdownIt-Anchor" href="#假设在无线网条件下网络比较拥堵你会选择-tcp-还是-udp-通信"></a> 假设在无线网条件下，网络比较拥堵，你会选择 TCP 还是 UDP 通信</h3>
+<p>在无线网络条件下，如果网络比较拥堵，选择 TCP 还是 UDP 通信取决于你的应用场景和需求。</p>
+<ul>
+<li>
+<p><strong>TCP（传输控制协议）</strong>：TCP 是一种面向连接的、可靠的传输层协议。它提供了确认机制、重传机制以及流量控制和拥塞控制，确保数据能够准确无误地到达目的地。在网络拥堵的情况下，TCP 会通过其内置的拥塞控制算法来降低发送速率，从而减少网络负担，试图避免进一步的拥堵。然而，在高丢包率或信号不稳定的无线网络环境中，TCP 的性能可能会受到影响，因为它可能频繁地进行重传操作，并且在检测到丢包时显著降低传输速度。</p>
+</li>
+<li>
+<p><strong>UDP（用户数据报协议）</strong>：与 TCP 不同，UDP 是一种无连接、不可靠的传输层协议。它不提供确认机制或重传机制，也没有内置的拥塞控制。这意味着 UDP 通常具有较低的延迟和开销，因为不需要等待确认即可发送下一个数据包。在某些实时应用中，如视频会议、在线游戏或 VoIP 等，即使网络条件不佳，也更倾向于使用 UDP，因为这些应用优先考虑传输的及时性而不是可靠性。对于这些场景来说，少量的数据丢失是可以接受的，重要的是要保持低延迟。</p>
+</li>
+</ul>
+<p>因此，如果你的应用对数据传输的可靠性要求较高，或者你需要确保所有数据都能被接收方正确接收，那么即使在网络拥堵情况下也应该选择 TCP。而如果你的应用可以容忍一定的数据丢失，并且需要尽可能低的延迟，比如实时音视频流媒体，则应选择 UDP。此外，现代的一些基于 UDP 的改进协议，如 QUIC，结合了部分 TCP 的优点并减少了 UDP 的缺点，也为开发者提供了更多的选择。</p>
+<h3 id="拥塞控制算法有哪些"><a class="markdownIt-Anchor" href="#拥塞控制算法有哪些"></a> 拥塞控制算法有哪些？</h3>
+<p>拥塞控制算法主要用于网络通信中，以确保数据能够高效、有序地传输，并避免因过多的数据同时传输而导致的网络过载问题。以下是一些常见的拥塞控制算法：</p>
+<ol>
+<li>
+<p><strong>TCP 拥塞控制算法</strong>：</p>
+<ul>
+<li><strong>慢启动（Slow Start）</strong>：在连接开始时或网络出现丢包后，发送方以指数增长的方式增加拥塞窗口大小。</li>
+<li><strong>拥塞避免（Congestion Avoidance）</strong>：当拥塞窗口达到某个阈值后，采用线性增长方式缓慢增加拥塞窗口大小。</li>
+<li><strong>快速重传（Fast Retransmit）</strong>：一旦接收方检测到丢失了一个分组，它会立即发送多次重复的 ACK 给发送方，促使发送方在未等到超时的情况下就进行重传。</li>
+<li><strong>快速恢复（Fast Recovery）</strong>：与快速重传配合使用，在检测到丢包时不立即进入慢启动状态，而是尝试通过调整拥塞窗口和阈值来快速恢复正常的数据传输。</li>
+</ul>
+</li>
+<li>
+<p><strong>Reno 和 Tahoe</strong>：这些是 TCP 拥塞控制机制的具体实现版本，其中 Reno 对快速重传和快速恢复机制进行了改进。</p>
+</li>
+<li>
+<p><strong>New Reno</strong>：进一步改进了 Reno，使得在多个分组丢失的情况下能更有效地恢复。</p>
+</li>
+<li>
+<p><strong>CUBIC</strong>：一种广泛使用的 TCP 拥塞控制算法，旨在提供更好的带宽利用率，尤其是在高带宽 - 延迟产品网络环境中。</p>
+</li>
+<li>
+<p><strong>BBR（Bottleneck Bandwidth and RTT）</strong>：由 Google 提出的一种新型拥塞控制算法，它试图找到并利用瓶颈带宽，从而最大化吞吐量，减少排队延迟。</p>
+</li>
+<li>
+<p><strong>QUIC 协议中的拥塞控制</strong>：QUIC 是一个基于 UDP 的现代传输层协议，其拥塞控制机制借鉴了 TCP 的一些概念，但设计上更加灵活，支持更快的连接建立和更有效的拥塞控制。</p>
+</li>
+</ol>
+<p>以上就是一些常用的网络拥塞控制算法，每种算法都有其适用场景和特点。随着网络环境和技术的发展，新的算法也在不断被提出和发展。</p>
+<h2 id="epoll-相关"><a class="markdownIt-Anchor" href="#epoll-相关"></a> epoll 相关</h2>
+<p>有意思的问题与回答：</p>
+<blockquote>
+<p>… … 读 redis 的话，即使 redis 和请求程序同一台机器上，也需要通过读写套接字来完成，这个流程包括</p>
+<p>1.首先会涉及操作系统内核协议栈的处理，就 linux 来说，如果 redis 服务在本机，写套接字这个过程会在到达协议栈传输层时，发现目的 ip 来自本机，然后返回。redis 读取请求，通过套接字把结果返回。</p>
+<p>2.整个过程过程会有四次用户态和内核态的交互，其中两次还包括结果数据拷贝。</p>
+<p>3.Redis 底层通过 epoll 函数来监测是否有请求到来，如果不想单核 CPU 占用率到 100%，那么 epoll 的 idle time 这个参数最低只能配置成 1ms，这意味着响应的平均耗时应该在 500us。</p>
+<p>批判另一位答主测试程序的问题.jpg</p>
+<p>如果把这个测试 demo 修改下，每隔 10ms 读写一次（显然这种方式更贴近业务场景），那耗时就会暴增，理由上面说了，Redis 底层用 epoll 来监测套接字请求，同一个套接字短时间内发起大量读写，Redis 的 epoll 函数会批量读取请求然后去处理（设置的触发方式肯定是水平触发，意味着只需要和内核态交互一次就可以读取一个 fd 的多个 Req），导致平均耗时看起来不高，可一旦进入业务场景，零散读写 Redis，耗时就会大幅增加。</p>
+<p><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/595091316/answer/3039792939">游戏服务器缓存为什么一般不直接 Redis，而是自己写代码写入计算机内存中呢？</a></p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://gg2002.github.io">羽殇之舞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://gg2002.github.io/2025/03/20/interview-computer-network/">http://gg2002.github.io/2025/03/20/interview-computer-network/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://gg2002.github.io" target="_blank">羽殇之舞的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E9%9D%A2%E7%BB%8F/">面经</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/03/20/data-engineer/" title="data-engineer"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">data-engineer</div></div></a></div><div class="next-post pull-right"><a href="/2025/03/20/interview-garbage-collection/" title="GC 算法笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">GC 算法笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/03/04/interview-exp-mixed/" title="一片荒芜的面经"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-05</div><div class="title">一片荒芜的面经</div></div></a></div><div><a href="/2023/12/04/interview-exp-raft/" title="raft 面经（？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-04</div><div class="title">raft 面经（？</div></div></a></div><div><a href="/2023/12/04/interview-exp-single-db/" title="15445 面经（？"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2023-12-04</div><div class="title">15445 面经（？</div></div></a></div><div><a href="/2025/03/04/interview-exp-origin/" title="原始面经存档"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-05</div><div class="title">原始面经存档</div></div></a></div><div><a href="/2025/03/17/interview-exp-cpp/" title="C++ 面经杂文"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-17</div><div class="title">C++ 面经杂文</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">25</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">14</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%81%87%E8%AE%BE%E5%9C%A8%E6%97%A0%E7%BA%BF%E7%BD%91%E6%9D%A1%E4%BB%B6%E4%B8%8B%E7%BD%91%E7%BB%9C%E6%AF%94%E8%BE%83%E6%8B%A5%E5%A0%B5%E4%BD%A0%E4%BC%9A%E9%80%89%E6%8B%A9-tcp-%E8%BF%98%E6%98%AF-udp-%E9%80%9A%E4%BF%A1"><span class="toc-number">1.</span> <span class="toc-text"> 假设在无线网条件下，网络比较拥堵，你会选择 TCP 还是 UDP 通信</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8B%A5%E5%A1%9E%E6%8E%A7%E5%88%B6%E7%AE%97%E6%B3%95%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="toc-number">2.</span> <span class="toc-text"> 拥塞控制算法有哪些？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#epoll-%E7%9B%B8%E5%85%B3"><span class="toc-number"></span> <span class="toc-text"> epoll 相关</span></a></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/21/interview-distributed-id-generator/" title="分布式唯一 ID 生成算法笔记">分布式唯一 ID 生成算法笔记</a><time datetime="2025-03-21T22:42:04.000Z" title="发表于 2025-03-22 06:42:04">2025-03-22</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/20/data-engineer/" title="data-engineer">data-engineer</a><time datetime="2025-03-20T07:50:21.000Z" title="发表于 2025-03-20 15:50:21">2025-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/20/interview-computer-network/" title="少量计网面经">少量计网面经</a><time datetime="2025-03-20T05:26:42.000Z" title="发表于 2025-03-20 13:26:42">2025-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/20/interview-garbage-collection/" title="GC 算法笔记">GC 算法笔记</a><time datetime="2025-03-20T01:11:58.000Z" title="发表于 2025-03-20 09:11:58">2025-03-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/03/17/interview-exp-cpp/" title="C++ 面经杂文">C++ 面经杂文</a><time datetime="2025-03-17T09:03:54.000Z" title="发表于 2025-03-17 17:03:54">2025-03-17</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
