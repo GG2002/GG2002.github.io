@@ -59,7 +59,7 @@ Nebula Graph 是图数据库，其以 vertex，edge 和 tag 的形式存储数�
 
 图数据库这样做的优点在于灵活性高，支持复杂的图形算法，可用于构建复杂的关系图谱。它可以看作是特化了传统关系型数据库的 JOIN 操作，简化了用户查询实体之间的关系的操作，换言之，图数据库是比关系型数据库更注重**关系**的数据库。
 
-![NebulaGraph 架构图](/img/ospp-2024-proposal/nebula-graph-architecture.png)
+![NebulaGraph 架构图](../img/ospp-2024-proposal/nebula-graph-architecture.png)
 上图是官方的架构图，协议与周边生态细节略去不谈，易知 NebulaGraph 由三部分——graphd, metad, storaged 组成。其中 graphd 算是查询引擎，metad 存有服务地址和 Schema 等各类元信息，而 storaged 存储具体的数据。
 
 #### graphd
@@ -72,7 +72,7 @@ NebulaGraph 结合 GQL 自研了 nGQL(nebula graph GQL)。正如各类 SQL 引�
 
 参考官方介绍，metad 与 storaged 在原理架构上并无太大区别，因此可以合并介绍，接下来只介绍 storaged。
 
-![NebulaGraph Storage 架构图](/img/ospp-2024-proposal/nebula-graph-storage-arch.png)
+![NebulaGraph Storage 架构图](../img/ospp-2024-proposal/nebula-graph-storage-arch.png)
 
 > Storage interface 层
 > 

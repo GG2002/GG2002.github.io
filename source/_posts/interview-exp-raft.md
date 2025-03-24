@@ -15,7 +15,7 @@ katex: true
 
 ## CAP 是什么？Raft 实现了 CAP 中的哪两个
 CAP（Consistency, Availability, Partition tolerance）。CA 只有单机实现，毕竟分布式系统必须有 Partition tolerance。
-![一致性细分类](/img/raft/consistency.jpg)
+![一致性细分类](../img/raft/consistency.jpg)
 
 - 弱一致性——最终一致性（无法实时获取最新更新的数据，但是一段时间过后，数据是一致的）
   - Gossip(Cassandra，Redis 的通信协议)
@@ -25,10 +25,14 @@ CAP（Consistency, Availability, Partition tolerance）。CA 只有单机实现�
   -  Raft
   -  ZAB
 
+还有 Quorum NWR 算法，根据 N、W、R 参数不同有强一致性或者最终一致性的效果。
+
 据 PingCAP 所分享：
 > 一些常见的误解：使用了 Raft 或者 paxos 的系统都是线性一致的（Linearizability，即强一致），其实不然，共识算法只能提供基础，要实现线性一致还需要在算法之上做出更多的努力。以 TiKV 为例，它的共识算法是 Raft，在 Raft 的保证下，TiKV 提供了满足线性一致性的服务。
 
-所以，怪怪的问题。
+笔者猜测一下 PingCAP 的意思，Raft 没想好，但是 Quorum NWR 在 W+R>N 的情况下，比如 N=5，写 3 个读 3 个，能确保读出来 [V1,V1,V2] 这种组合，V1 和 V2 肯定有一个是最新的，那么还需要接着读直到有一个的数量超过 2 个，理论上是这样。
+
+假如这时混入了 V3 这个值，V1 和 V2 的分布就不对了，单纯的算法就读不到超过 2 个的值，但这个事完全可以通过引入时间戳和 undo log 来解决，这与算法是没关系的。所以算法是基础，要实现线性一致还需要系统配合（？
 
 ## Raft 和其他共识协议相比的优缺点
 不会
@@ -56,7 +60,7 @@ CAP（Consistency, Availability, Partition tolerance）。CA 只有单机实现�
 
 ### no-op
 Commit 限制：仅提交 leader 当前 term 的日志条目。
-![figure8](/img/interview-exp-raft/figure8.png)
+![figure8](../img/interview-exp-raft/figure8.png)
 为什么要增加这个限制？我们同样基于这个图进行场景模拟就知道了。
 
 - 阶段（a）：S1 是 leader，收到请求后仅复制 index2 的日志给了 S2，尚未复制给 S3 ~ S5；
@@ -115,7 +119,7 @@ Commit 限制：仅提交 leader 当前 term 的日志条目。
 对于分布式缓存来说，当一个节点接收到请求，如果该节点并没有存储缓存值，那么它面临的难题是，从谁那获取数据？自己，还是节点 1, 2, 3, 4… 。假设包括自己在内一共有 10 个节点，当一个节点接收到请求时，随机选择一个节点，由该节点从数据源获取数据。
 
 那有什么办法，对于给定的 key，每一次都选择同一个节点呢？使用 hash 算法也能够做到这一点。那把 key 的每一个字符的 ASCII 码加起来，再除以 10 取余数可以吗？当然可以，这可以认为是自定义的 hash 算法。
-![hash_select](/img/interview-exp-raft/hash_select.jpg)
+![hash_select](../img/interview-exp-raft/hash_select.jpg)
 
 简单求取 Hash 值解决了缓存性能的问题，但是没有考虑节点数量变化的场景。假设移除了 10 个节点其中一台节点，只剩下 9 个，那么之前 `hash(key) % 10` 变成了 `hash(key) % 9`，也就意味着几乎缓存值对应的节点都发生了改变。即几乎所有的缓存值都失效了。节点在接收到对应的请求时，均需要重新去数据源获取数据，容易引起 `缓存雪崩`。
 
@@ -123,7 +127,7 @@ Commit 限制：仅提交 leader 当前 term 的日志条目。
 - 计算节点/机器 (通常使用节点的名称、编号和 IP 地址) 的哈希值，放置在环上。
 - 计算 key 的哈希值，放置在环上，**顺时针**寻找到的第一个节点，就是应选取的节点/机器。
   
-![add_peer](/img/interview-exp-raft/add_peer.jpg)
+![add_peer](../img/interview-exp-raft/add_peer.jpg)
 
 环上有 peer2，peer4，peer6 三个节点，`key11`，`key2`，`key27` 均映射到 peer2，`key23` 映射到 peer4。此时，如果新增节点/机器 peer8，假设它新增位置如图所示，那么只有 `key27` 从 peer2 调整到 peer8，其余的映射均没有发生改变。
 

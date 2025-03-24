@@ -5,7 +5,7 @@ tags: GSOC2024
 katex: true
 ---
 如图所示：
-![Overlapping rules](/img/gsoc-2024-proposal/Overlapping-rules.png)
+![Overlapping rules](../img/gsoc-2024-proposal/Overlapping-rules.png)
 
 考虑`STxn-0`的`put`操作（注意，这里的`put`并不包括`STxn-0`的子事务如`GsTxn-*`的`put`操作），它不应该与图中标为红色的`del`与`put`相交，同时，它又可以与图中标为蓝色的`del`与`put`相交（换言之，这些背景是绿色的区域需要被排除）。这是因为`Then`和`Else`的语义注定了这两个分支只会选择一个执行，所以即使它们重叠了也无所谓。
 
@@ -15,7 +15,7 @@ katex: true
 最好的办法莫过于构筑一棵包含了所有的`del`的区间树，然后遍历`put`进行查询。但如上所说，有一些`del`是需要被排除的，若是只存区间而不存事务间的父子兄弟关系，这将无法识别该排除什么。考虑到 Xline 作为一个 metadata 数据库，他的事务不应该有很多的嵌套结构以及很多的子事务，使用额外空间存一些信息是应当被允许的。
 
 上面那张图有些复杂，实际上`put`与`del`的父子兄弟关系可以简化如下图：
-![Overlapping Rules Simplified](/img/gsoc-2024-proposal/Overlapping-rules-simple.png)
+![Overlapping Rules Simplified](../img/gsoc-2024-proposal/Overlapping-rules-simple.png)
 
 考虑属于`STxn-0`的`Then`分支的`put`，它仍然不能与红色区域内的`del`相交，但可以与蓝色区域的`del`相交。
 
