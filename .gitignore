@@ -8,3 +8,8 @@ public/
 _multiconfig.yml
 public/
 .obsidian
+.vscode/c_cpp_properties.json
+.vscode/launch.json
+*.cpp
+*.ipynb
+*.py

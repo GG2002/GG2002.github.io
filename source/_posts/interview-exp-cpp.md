@@ -826,4 +826,4 @@ Go（通常称为 Golang）和 C++ 是两种不同的编程语言，它们在设
 # GDB 多线程调试小连招
 我用过 gdb，比如调试正在运行的程序，先用 ps -ef 获取 pid，然后使用 gdb attach pid。
 
-调试多线程，我会先 list 看看在哪行源码，或者在那个 cpp 文件，break 可以 xxx.cpp:30，在某个文件上第 30 行打个断点，然后 run 跑起来，info thread 左上角的星号是正在执行的线程，可以用 thread id 来切换线程，还可以用 set scheduler-locking 来设置只让一根线程执行。
+调试多线程，我会先 list 看看在哪行源码，或者在那个 C++ 文件，break 可以 xxx.cpp:30，在某个文件上第 30 行打个断点，然后 run 跑起来，info thread 左上角的星号是正在执行的线程，可以用 thread id 来切换线程，还可以用 set scheduler-locking 来设置只让一根线程执行。

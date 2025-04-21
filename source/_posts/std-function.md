@@ -3,7 +3,7 @@ title: 各语言标准库实现简记
 date: 2023-12-14 17:03:07
 tags: 
     - Golang
-    - c++
+    - C++
 ---
 # sort
 ## Golang
