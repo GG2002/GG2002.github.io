@@ -1,5 +1,5 @@
 ---
-title: C++ 面经杂文
+title: C 十十 面经杂文
 date: 2025-03-17 17:03:54
 tags: 面经
 ---
@@ -731,72 +731,7 @@ logger.log(INFO, "This is an info message.");
 这个伪代码展示了如何创建一个简单的异步日志系统。实际应用中可能还需要增加更多的功能，比如配置文件的支持、多种输出目标（文件、控制台等）、更复杂的格式化选项等。此外，还可以通过调整队列大小、批量写入策略等方式进一步优化性能。
 
 ## 多线程打印奇偶数
-为了实现多线程打印奇数和偶数，我们可以使用 C++ 中的线程同步机制来确保两个线程能够正确地交替执行，即一个线程打印奇数，另一个线程打印偶数。这里可以使用互斥锁（`std::mutex`）和条件变量（`std::condition_variable`）来控制两个线程的执行顺序。
-
-以下是一个简单的例子展示如何使用 C++ 实现这一功能：
-
-<details>
-<summary>代码实现</summary>
-
-```cpp
-#include <iostream>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-
-std::mutex mtx;
-std::condition_variable cv;
-bool ready = false; // 标志位，用于指示是否准备好打印下一个数字
-int number = 1; // 要打印的数字
-
-void printOdd()
-{
-    while(number < 10) // 假设我们打印到 9 为止
-    {
-        std::unique_lock<std::mutex> lck(mtx);
-        cv.wait(lck, []{return !ready;}); // 等待直到轮到打印奇数
-        
-        if(number % 2 != 0)
-        {
-            std::cout << "Odd: " << number << std::endl;
-            ++number;
-            ready = true; // 设置标志位，表示下一个应该是偶数
-            cv.notify_all(); // 通知其他等待的线程
-        }
-    }
-}
-
-void printEven()
-{
-    while(number < 10)
-    {
-        std::unique_lock<std::mutex> lck(mtx);
-        cv.wait(lck, []{return ready;}); // 等待直到轮到打印偶数
-        
-        if(number % 2 == 0)
-        {
-            std::cout << "Even: " << number << std::endl;
-            ++number;
-            ready = false; // 设置标志位，表示下一个应该是奇数
-            cv.notify_all();
-        }
-    }
-}
-
-int main()
-{
-    std::thread t1(printOdd);
-    std::thread t2(printEven);
-
-    t1.join();
-    t2.join();
-
-    return 0;
-}
-```
-</details>
-
-这段代码创建了两个线程`t1`和`t2`，分别用于打印奇数和偶数。通过使用互斥锁和条件变量，我们保证了在任意时刻只有一个线程在执行，并且确保了奇数和偶数按照正确的顺序被打印出来。在这个例子中，我们假设打印的范围是 1 到 9，当然这个范围可以根据需要调整。
+[三线程依次打印 1~100](os-and-pl-mutex.md)
 
 ## Golang 与 C++ 的区别
 Go（通常称为 Golang）和 C++ 是两种不同的编程语言，它们在设计理念、使用场景以及实现方式上都有显著的区别：
@@ -824,6 +759,4 @@ Go（通常称为 Golang）和 C++ 是两种不同的编程语言，它们在设
 - **性能优化难度**：对于某些需要极致性能的应用场景，Go 可能不如 C++ 灵活，尤其是在需要精细控制硬件资源时。
 
 # GDB 多线程调试小连招
-我用过 gdb，比如调试正在运行的程序，先用 ps -ef 获取 pid，然后使用 gdb attach pid。
-
-调试多线程，我会先 list 看看在哪行源码，或者在那个 C++ 文件，break 可以 xxx.cpp:30，在某个文件上第 30 行打个断点，然后 run 跑起来，info thread 左上角的星号是正在执行的线程，可以用 thread id 来切换线程，还可以用 set scheduler-locking 来设置只让一根线程执行。
+[GDB 面试速记](gdb-note.md)
