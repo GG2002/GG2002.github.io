@@ -9,7 +9,7 @@ tags: nas
 由于笔者现在电脑设备有好几台，最近出于优化工作流的想法，想把自己的个人资料和一些工作文件丢到一起方便管理；而且笔者去年买的 1TB 和 2TB 固态剩余空间现在都有些捉襟见肘了，想把一些 galgame 和正经游戏丢到机械硬盘里存起来；再而且，笔者也需要一台 24h 运行的性能还过得去的设备来跑一些百度云下载、自己写的爬虫等等的简单任务。
 
 综上所述，奖励自己一台 2k 元的威联通 Nas TS-464c 情有可原。
-![威联通 TS-t464c](../img/nas-tool/ts-464c.png)
+![威联通 TS-t464c](https://gg2002.github.io/img/nas-tool/ts-464c.png)
 
 在此之前，笔者有组过 OpenWrt 软路由和使用树莓派 + 外挂硬盘当文件服务器使用的经历。踩的坑太多了，最近也没什么时间捡垃圾回来自组一台 Nas，索性就买一次成品 Nas。
 
@@ -164,7 +164,7 @@ services:
 这遵循与 `qBittorrent` 相同的逻辑，把配置目录和数据目录挂载在 `AppData` 目录下持久化。这些软件有很完善的可搜索资料，笔者不在此赘述，笔者参考的使用教程为 [使用 Sonarr 搭建自动化追番系统](https://reorx.com/blog/track-and-download-shows-automatically-with-sonarr/)~~（该文作者的中文说的和英文一样好）~~。笔者也见过不少开源社区的朋友先写一份中文 blog 再写一遍英文 blog 的，也算能理解。
 
 效果如下：
-![sonarr 界面](../img/nas-tool/sonarr.png)
+![sonarr 界面](https://gg2002.github.io/img/nas-tool/sonarr.png)
 
 当然，使用了一段时间后，笔者发现 `sonarr` 用来搜索番剧还是不太行，`Bangumi Moe` 上随手就能搜出来的资源，`sonarr` 必须要手动搜索才行，有时候还要手动填视频资料把他放入相应的位置。原因在于 `sonarr` 使用的全都是 `TVDB` 上的英文名，比如 `憧憬成为魔法少女` 的英文就是 `Gushing Over Magical Girls`，而英文在 `Bangumi Moe` 虽然能搜到资源，但是资源标题里肯定不带英文翻译，所以 `sonarr` 对不上号，只能手动搜索添加。
 
@@ -201,7 +201,7 @@ services:
 这里有个有趣的事情，由于笔者的 Nas 部署在校园网内，上传外网是不可能的，这也是笔者下载的大部分资源的情况，但是笔者下载的当季新番则基本挂满了上传流量，这说明校园网内的 p2p 也是很有活力的（大概）。
 
 效果如下：
-![AutoBangumi 界面](../img/nas-tool/autobangumi.png)
+![AutoBangumi 界面](https://gg2002.github.io/img/nas-tool/autobangumi.png)
 
 ### 播放器 Plex
 Plex 简单易用，多端支持（至少手机支持的很好），威联通 App Center 也可以直接下，所以笔者就使用了 Plex 来当播放器。配置也没什么好说的，说到底也是因为上面两个搜索工具会默认把下载完的文件重命名为 Plex 能识别的格式，因此只需要把存有视频文件的文件夹添加进 Plex 让它自动识别就好。
@@ -209,7 +209,7 @@ Plex 简单易用，多端支持（至少手机支持的很好），威联通 Ap
 Plex 网页端播放没什么限制，倒是移动端要 1k 大洋开终身会员，或者 40 大洋买取消一分钟播放限制（否则只能观看一分钟自己下的视频），而且都要刀乐支付。笔者倒是想 40 支持一下正版，但实在找不到靠谱的渠道支付，所以还是找了~~盗版~~开心版使用。
 
 最终效果如下：
-![Plex 界面](../img/nas-tool/plex.png)
+![Plex 界面](https://gg2002.github.io/img/nas-tool/plex.png)
 
 ## Reference
 > [解决 Docker macvlan 网络与宿主机通讯问题](https://blog.csdn.net/weixin_44907046/article/details/123144254)

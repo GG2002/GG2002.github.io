@@ -112,7 +112,7 @@ root@pve:~# dmesg | grep 'remapping'
 [ 0.105871] x2apic: IRQ remapping doesn't support X2APIC mode
 ```
 笔者之前以为自己的主板 Bios 已经开启了这些些选项所以没有在意这个报错，导致排查了很久才发现其实根本没开。详情见：[国光的 PVE 环境搭建教程：BIOS 设置](https://pve.sqlsec.com/2/1/)，尤其注意最后一条 `x2APIC` 选项，笔者看下图的两个选项差不多就全选了，
-![x99 主板 Bios 截图](../img/pve/x99_bios_x2apic.png)
+![x99 主板 Bios 截图](https://gg2002.github.io/img/pve/x99_bios_x2apic.png)
 然后重启数次还是开启不了 `X2APIC mode`，因此切记切记，**只能开启第一个选项，第二个不能开**。
 
 上面这些操作即使不成功也不会影响你检查显卡驱动是否被屏蔽，但是绝对会导致你显卡直通失败。所以在进行下一步前，确保上面没有报错，否则你要同时考虑上下两步是不是都做错了。

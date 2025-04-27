@@ -2,7 +2,7 @@
 
 replace() {
   # 替换图片路径
-  find source/_posts -type f -name "*.md" -exec sed -i 's|(\.\./img/|(/img/|g' {} +
+  find source/_posts -type f -name "*.md" -exec sed -i 's|(\(\.\./\)\+img/|(/img/|g' {} +
   # 替换 C++ 为 C&#43;&#43;
   find source/_posts -type f -name "*.md" -exec sed -i 's/ C++/ C\&#43;\&#43;/Ig' {} +
   # 替换 CPP 为 C&#43;&#43;
@@ -13,7 +13,7 @@ replace() {
 
 restore() {
   # 复原图片路径
-  find source/_posts -type f -name "*.md" -exec sed -i 's|(/img/|(\.\./img/|g' {} +
+  find source/_posts -type f -name "*.md" -exec sed -i 's|(/img/|(https:\/\/gg2002.github.io/img/|g' {} +
   # 复原 C&#43;&#43; 为 C++
   find source/_posts -type f -name "*.md" -exec sed -i 's/ C\&#43;\&#43;/ C++/g' {} +
 

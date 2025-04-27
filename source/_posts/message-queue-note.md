@@ -23,10 +23,10 @@ tags:
 2. 为每条消息绑定一个 SequenceNumber
 
 
-![Kafka 去重](../img/message-queue-note/Kafka去重.png)
+![Kafka 去重](https://gg2002.github.io/img/message-queue-note/Kafka去重.png)
 
-![Kafka 维持有序 1](../img/message-queue-note/Kafka维持有序-1.png)
-![Kafka 维持有序 2](../img/message-queue-note/Kafka维持有序-2.png)
+![Kafka 维持有序 1](https://gg2002.github.io/img/message-queue-note/Kafka维持有序-1.png)
+![Kafka 维持有序 2](https://gg2002.github.io/img/message-queue-note/Kafka维持有序-2.png)
 
 然后使用滑动窗口确保消息不丢失（现在持有 1-5 号，7 号数据到了会要求重发 6 号数据）以及去重，这解决了**数据乱序**与**数据重复**两个问题。
 

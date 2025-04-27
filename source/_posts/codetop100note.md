@@ -71,7 +71,7 @@ Manacher 算法可以达到$O(N)$的时空复杂度，不看。
 ### 抽象 BST
 将矩阵看作以 matrix[0][m-1] 为 root 的 BST。
 
-![lc240 抽象 BST](../img/codetop/lc240.png)
+![lc240 抽象 BST](https://gg2002.github.io/img/codetop/lc240.png)
 
 那么问题就简单了
 
@@ -164,7 +164,7 @@ BFS|DFS|并查集
 
 ## 2D 接雨水
 > 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
-> ![lc42 例子](../img/codetop/lc42.png)
+> ![lc42 例子](https://gg2002.github.io/img/codetop/lc42.png)
 > **输入**：height = [0,1,0,2,1,0,1,3,2,1,2,1]
 > 
 > **输出**：6
@@ -288,7 +288,7 @@ $$ v_{max}=max\{pv_{max},1+lv+rv\} $$
 ## 二叉搜索树中第 K 小的元素
 
 ## 二叉树中的最大路径和
-> ![lc124 例子](../img/codetop/lc124.jpg)
+> ![lc124 例子](https://gg2002.github.io/img/codetop/lc124.jpg)
 > 
 > **输入**：root = [-10,9,20,null,null,15,7]
 > 
@@ -382,7 +382,7 @@ $$
 
 ## 二叉树的右视图
 给定一个二叉树的 根节点 root，想象自己站在它的右侧，按照从顶部到底部的顺序，返回从右侧所能看到的节点值。
-![lc199 例](../img/codetop/lc199.png)
+![lc199 例](https://gg2002.github.io/img/codetop/lc199.png)
 
 层序遍历即可。
 
@@ -536,7 +536,7 @@ $dp[i][j]$代表$[i][j]$处最长的正方形边长（同时也等于算上$[i][
 
 转移方程为$dp[i][j]=min\{dp[i-1][j],dp[i][j-1],dp[i-1][j-1]\}+1$，即 左/左上/上 最小值 +1。
 
-![lc221 题解](../img/codetop/lc221.png)
+![lc221 题解](https://gg2002.github.io/img/codetop/lc221.png)
 
 所以，最大正方形$=max\{dp[i][j]\}$，子矩形总数$=sum(dp[i][j])$。
 

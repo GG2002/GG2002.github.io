@@ -51,7 +51,7 @@ KCP 采取了激进的重传策略，然而，所谓的激进是基于这样一�
 CUBIC 相对保守（在乎传输公平性，君子协议），而 KCP 舍弃了传输公平性则相当于侵犯了这部分公共空间。假如大家都使用 KCP，那么大家都不会变快，只有在大部分人用 CUBIC 的时候，使用 KCP 的人才能得到收益。
 
 KCP 协议除了游戏也多用在翻墙上，所以 wall 也是会对这个流量进行管控的。
-![KCP 现状](../img/interview-computer-network/KCP现状.png)
+![KCP 现状](https://gg2002.github.io/img/interview-computer-network/KCP现状.png)
 
 # HTTP/2 协议
 

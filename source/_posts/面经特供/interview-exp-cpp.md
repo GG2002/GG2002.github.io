@@ -356,7 +356,7 @@ int main() {
 **需要注意的是 future 和 promise 是还是基于 thread 的，而非 coroutine**。毕竟是 C++11 就引入的，而 C++20 才有 coroutine 呢。
 
 先声明 promise 然后获取绑定的 future，把 promise 丢到另一个线程里去，promise.set_value 就可以通过 future.get 了。
-![future 和 promise 流程](../img/interview-exp-cpp/future和promise流程.png)
+![future 和 promise 流程](https://gg2002.github.io/img/interview-exp-cpp/future和promise流程.png)
 
 在 C++ 中，std::async、std::packaged_task 和 std::promise 都是用来处理异步任务和结果管理的工具，packaged_task 和 async 可以视作 promise 的高级封装（因为可以注意到大家都要搭配 future 用而不是搭配 promise 用）。
 
@@ -443,7 +443,7 @@ v.swap(vector<Data>());
 
 ### `deque`
 deque 通常作为一组独立区块，第一区块朝某方向扩展，最后一个区块朝另一个方向扩展。
-![deque 内存布局](../img/interview-exp-cpp/deque内存布局.jpg)
+![deque 内存布局](https://gg2002.github.io/img/interview-exp-cpp/deque内存布局.jpg)
 
 - **resize**：类似于`vector`的`resize`，但是由于`deque`的内部结构不同（块状连续存储），其性能特征也有所不同。
 
@@ -620,7 +620,7 @@ T& operator =(T&& t){
 视作 a = (b = c); ，也就是 b 调用 = 操作符复制了 c，然后返回了 b（*this 就是 b 本身），a 再调用 = 操作符复制 b。
 
 ## 菱形继承
-![菱形继承](../img/interview-exp-cpp/菱形继承.png)
+![菱形继承](https://gg2002.github.io/img/interview-exp-cpp/菱形继承.png)
 
 使用 `class B: virtual public A` 这个**虚继承**语法使得 A 在任意派生类中只存一份，由此解决。
 

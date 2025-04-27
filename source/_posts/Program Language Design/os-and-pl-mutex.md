@@ -49,8 +49,7 @@ int compare_and_swap (int* reg, int oldval, int newval)
 换言之，只要双方实现约定好两个值，这里的 0 和 1 可以变成任意 x 和 y 变量以达成相同的效果。
 
 从上述过程也能看出自旋锁为什么被称为轻量级锁的原因。相较于会导致线程切换（陷入内核，保存线程 context，加入等待序列巴拉巴拉）的锁，自旋锁只需一条指令检测一次，lock 为 0 了立马就能获得锁，这可太轻量级了。如下图，如果说 CAS 请求一个锁的开销是从房间的一端走到另一端，上下文切换的开销大约就相当于跑 3 公里：
-
-![CAS 指令消耗时间对比](../img/os-and-pl-mutex/CAS指令消耗时间对比.png)
+![CAS 指令消耗时间对比](https://gg2002.github.io/img/os-and-pl-mutex/CAS指令消耗时间对比.png)
 
 所以自旋锁在什么时候会更高效呢？线程切换需要先将 B 切走然后再切回来，这之间起码几十条指令执行的时间。也就是说，当判断程序临界区只需最多十几条指令（反正小于两次线程切换所需的时间，JVM 的锁升级过程就是先来 10 条 CAS 指令等一等，等不到才换成线程切换的锁）就能执行完成时，自旋锁理论上一定是会比线程切换更加高效的。
 
@@ -166,11 +165,11 @@ if( !cond)// check if we guessed wrong
 
 注意，只是不会让临界区内的代码被移出临界区外，因此对于 lock 操作，lock 操作之前的代码是可以被挪入临界区内执行的；对于 unlock 操作，unlock 之后的代码也可以挪入临界区执行。因此 lock 与 unlock 操作分别对应一个单向的内存屏障。如下图，lock/unlock 与 acquire/release 对应：
 
-![内存屏障](../img/os-and-pl-mutex/内存屏障.jpeg)
+![内存屏障](https://gg2002.github.io/img/os-and-pl-mutex/内存屏障.jpeg)
 
 可以将 acquire/release 想象成一个内部代码无法逃离的闭区间，那么仅需将它两的顺序掉换成 release/acquire，那么显然这就是一个全向的 full fence 了，所有代码都无法跨过这个内存屏障。
 
-来个表速记：
+原子变量的内存序，来个表速记：
 
 | Memory order 枚举值  | 意义                                                                                                                                                                                                                                                              |
 | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -188,13 +187,6 @@ if( !cond)// check if we guessed wrong
 | Load              | memory_order_relaxed, memory_order_consume,            memory_order_acquire,  memory_order_seq_cst                                 | 其它枚举值不合法，MS STL 的实现是将其当作 memory_order_seq_cst 处理 |
 | Store             | memory_order_relaxed, memory_order_release,  memory_order_seq_cst                                                                  | 同上                                                                |
 | read-modify-write | memory_order_relaxed, memory_order_consume, memory_order_acquire, memory_order_release, memory_order_acq_rel, memory_order_seq_cst |                                                                     |
-
-显然可以将内存序与 Java 提到的屏障一一对应起来：
-1. 写 - 写屏障，对应 load 的 memory_order_release
-2. 读 - 写屏障，对应 store 的 memory_order_acquire
-3. 写 - 读屏障，对应 memory_order_seq_cst 或者 memory_order_acq_rel（？）笔者学艺不精，不知道 Java 到底会不会保证全局内存修改顺序，面经说是会保证内存一致性，但是又没说保证全局内存修改顺序。
-
-但总的来说，Java 的 volatile 关键字确实提供了相当强力的保障。
 
 #### order_relaxed 例子
 ```C++
@@ -250,6 +242,14 @@ for(unsigned i=0;i<10;++i) {
 线程 2：(0,0),(0,1),(0,2),(1,3),(8,4),(8,5),(8,6),(8,7),(10,8),(10,9)
 ```
 由上述结果可知，对于线程中的变量，例如线程 1 中的 x，其写入的值必定会被同一个线程后续的读取操作所读取，即使写入仅发生在 Store Buffer，而未写入到内存。因而我们看到了线程 1 输出中连续递增的 x（load/store 都在线程 1）。而线程 2 对于 x 的读取（x 的写入操作在线程 1），并不一定能读取到 x 的最新值，但如果能读取到（证明线程 1 将该值写入了内存），则也是按照 x 的写入顺序，即假设读取到 8 之后，后续读取不可能是 8 之前的值（即小于 8 的值）。
+
+#### Java 屏障与内存序总结
+显然可以将内存序与 Java 提到的屏障一一对应起来：
+1. 写 - 写屏障，对应 load 的 memory_order_release
+2. 读 - 写屏障，对应 store 的 memory_order_acquire
+3. 写 - 读屏障，对应 memory_order_seq_cst 或者 memory_order_acq_rel（？）笔者学艺不精，不知道 Java 到底会不会保证全局内存修改顺序，面经说是会保证内存一致性，但是又没说保证全局内存修改顺序。
+
+但总的来说，Java 的 volatile 关键字确实提供了相当强力的保障。
 
 
 ## 多线程代码示例
@@ -555,3 +555,7 @@ public:
 ```
 </details>
 
+### Java
+Java 的实现代码在此不表，注意到 Java 的 ReentrantLock 提供公平锁/非公平锁的选项，有一个小面经就是非公平锁为什么吞吐量会比公平锁大？
+
+答案是非公平锁可能会使用自旋锁抢占，不必像公平锁一样每次都有线程切换的代价（毕竟要按顺序唤醒线程，队首的线程肯定是阻塞态）。

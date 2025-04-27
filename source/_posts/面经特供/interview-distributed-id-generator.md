@@ -6,7 +6,7 @@ katex: true
 ---
 # 雪花算法
 ## 格式（64bit）
-![雪花算法原始格式](../img/distributed-id-generator/雪花算法原始格式.png)
+![雪花算法原始格式](https://gg2002.github.io/img/distributed-id-generator/雪花算法原始格式.png)
 - 1bit 不用：因为二进制中最高位是符号位，1 表示负数，0 表示正数，生成的 id 一般都是用整数，所以最高位固定为 0
 - 41bit 时间戳：这里采用的就是当前系统的具体时间，单位为毫秒
 - 10bit 工作机器 ID（workerId）：每台机器分配一个 id，这样可以标示不同的机器，但是上限为 1024，标示一个集群某个业务最多部署的机器个数上限
@@ -17,7 +17,7 @@ katex: true
 - 趋势递增：由于强依赖时间戳，所以整体趋势会随着时间递增
 - 单调递增（×）：不满足单调递增，在不考虑时间回拨的情况下，虽然在单机中可以保持单调递增，但在分布式集群中无法做到单调递增，只能保证总体趋势递增
 - 信息安全指的是 ID 生成不规则，无法猜测下一个
-![雪花算法特点](../img/distributed-id-generator/雪花算法特点.png)
+![雪花算法特点](https://gg2002.github.io/img/distributed-id-generator/雪花算法特点.png)
 
 ## 时间回拨
 简单说就是时间被调整回到了之前的时间，由于雪花算法重度依赖机器的当前时间，所以一旦发生时间回拨，将有可能导致生成的 ID 可能与此前已经生成的某个 ID 重复（前提是刚好在同一毫秒生成 ID 时序列号也刚好一致）。
@@ -25,7 +25,7 @@ katex: true
 看上去不会是一个很严重的问题，毕竟美团 Leaf 解决方案也无非是小于 5ms 就等一会，大于就直接报错。
 
 ### 基于时钟序列解决时间回拨的方案
-![时钟序列雪花算法](../img/distributed-id-generator/时钟序列雪花算法.png)
+![时钟序列雪花算法](https://gg2002.github.io/img/distributed-id-generator/时钟序列雪花算法.png)
 如上图，将原本 10 位的机器码拆分成 3 位时钟序列及 7 位机器码。发生时间回拨的时候，时间已经发生了变化，那么这时将时钟序列新增 1 位，重新定义整个雪花 Id。为了**避免实例重启引起时间序列丢失**，因此时钟序列最好通过 DB 存储起来。
 
 这当然会导致分布式实例规模由 $2^{10}(1024)$ 降至 $2^7(128)$，同时每个分布式实例支持最多 $2^3(8)$ 次时间回拨。
@@ -33,10 +33,10 @@ katex: true
 # UidGenerator
 UidGenerator 是 Java 实现的，基于 Snowflake 算法的唯一 ID 生成器。在实现上，UidGenerator 通过借用未来时间来解决 sequence 天然存在的并发限制；采用 RingBuffer 来缓存已生成的 UID, 并行化 UID 的生产和消费，同时对 CacheLine 补齐，避免了由 RingBuffer 带来的硬件级「伪共享」问题。
 
-![UidGenerator 格式](../img/distributed-id-generator/UidGenrator格式.png)
+![UidGenerator 格式](https://gg2002.github.io/img/distributed-id-generator/UidGenrator格式.png)
 
 一言以蔽之就是整了两个预生成队列，然后一个线程不依赖系统时间、专门管理 delta seconds 这个递增变量往队列里生产 id。
-![UidGenerator 队列](../img/distributed-id-generator/UidGenerator队列.png)
+![UidGenerator 队列](https://gg2002.github.io/img/distributed-id-generator/UidGenerator队列.png)
 
 RingBuffer 是无锁队列的典型实现（为什么会有两个 Ringbuffer 呢，笔者也不知道，按理说无锁队列有一个 Ringbuffer 就够了，也许两个能快一点？），而伪共享也是单纯的为了解决 id 生成效率问题。
 
@@ -58,7 +58,7 @@ UidGenerator 行为可以概括如下：
 # 美团 Leaf
 美团 Leaf 也是相当老（2017 年的技术博客）的解决方案了，实际上压根没解决时钟回拨的问题，估计主要是在早年提供了一个企业级实现，说我们自己这么用反正没问题，时钟回拨发生了就发生了，还不是解决过来了。流程如下：
 
-![美团 Leaf 流程](../img/distributed-id-generator/美团Leaf流程.png)
+![美团 Leaf 流程](https://gg2002.github.io/img/distributed-id-generator/美团Leaf流程.png)
 
 从上图可以看到 workerID 是跟 ip:port 绑定的，这个也是企业级实现嘛，笔者也有想过通过一个 hash 函数结合服务的 mac 地址或者这样那样的唯一标识符生成 workerID，但是美团直接绑 ip:port 也是相当简单粗暴了。
 

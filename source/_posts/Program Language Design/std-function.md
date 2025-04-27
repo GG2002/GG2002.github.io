@@ -22,4 +22,4 @@ STL 的 sort 算法与 Golang 基本一致，同样是：
 - 快排递归分段。
 - 一旦分段后的数据量<16，为避免 QuickSort 快排的递归调用带来过大的额外负荷，就改用插入排序。
 - 如果递归层次过深，改用堆排序。
-![STL 的 sort 函数流程](../img/std-function/STL的sort函数流程.png)
+![STL 的 sort 函数流程](https://gg2002.github.io/img/std-function/STL的sort函数流程.png)

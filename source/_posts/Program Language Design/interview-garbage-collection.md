@@ -10,11 +10,11 @@ tags: GC
 
 示例如下：
 1. 开启 STW，停止程序的运行，图中是本次 GC 涉及到的 root 节点和相关对象。
-![mark-sweep-1](../img/garbage-collection/mark-sweep-1.png)
+![mark-sweep-1](https://gg2002.github.io/img/garbage-collection/mark-sweep-1.png)
 1. 从根节点出发，标记所有可达对象。
-![mark-sweep-2](../img/garbage-collection/mark-sweep-2.png)
+![mark-sweep-2](https://gg2002.github.io/img/garbage-collection/mark-sweep-2.png)
 1. 停止 STW，然后回收所有未被标记的对象
-![mark-sweep-3](../img/garbage-collection/mark-sweep-3.png)
+![mark-sweep-3](https://gg2002.github.io/img/garbage-collection/mark-sweep-3.png)
 
 标记清除法的最大弊端就是在**整个 GC 期间需要 STW**，将整个程序暂停。因为如果不进行 STW 的话，会出现已经被标记的对象 A，引用了新的未被标记的对象 B，但由于对象 A 已经标记过了，不会再重新扫描 A 对 B 的可达性，从而将 B 对象当做垃圾回收掉。
 
