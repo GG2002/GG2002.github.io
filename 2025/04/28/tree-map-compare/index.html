@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
 <meta property="article:published_time" content="2025-04-28T08:23:50.000Z">
-<meta property="article:modified_time" content="2025-04-28T17:24:19.002Z">
+<meta property="article:modified_time" content="2025-04-28T17:38:32.567Z">
 <meta property="article:author" content="羽殇之舞">
 <meta property="article:tag" content="B-Tree">
 <meta property="article:tag" content="B+Tree">
@@ -62,7 +62,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-04-29 01:24:19'
+  postUpdate: '2025-04-29 01:38:32'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -166,7 +166,7 @@
       }
     }
     detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-28T08:23:50.000Z" title="发表于 2025-04-28 16:23:50">2025-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-28T17:24:19.002Z" title="更新于 2025-04-29 01:24:19">2025-04-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>人们总会争论 B-Tree 族、红黑树与跳表的互换性，已知 Java 与 C++ 的 Map 都使用了红黑树作为底层结构，围绕此问题，人们总会在一个缓存结构出现后问道：<code>那为什么不使用跳表/B树呢？</code></p>
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">32</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-28T08:23:50.000Z" title="发表于 2025-04-28 16:23:50">2025-04-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-04-28T17:38:32.567Z" title="更新于 2025-04-29 01:38:32">2025-04-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>7分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>人们总会争论 B-Tree 族、红黑树与跳表的互换性，已知 Java 与 C++ 的 Map 都使用了红黑树作为底层结构，围绕此问题，人们总会在一个缓存结构出现后问道：<code>那为什么不使用跳表/B树呢？</code></p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/516912481">rust 的 TreeMap 为什么采用 B-tree 而不是红黑树？</a></li>
 <li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20202931">为啥 redis 使用跳表 (skiplist) 而不是使用 red-black？</a></li>
@@ -185,7 +185,7 @@
 </thead>
 <tbody>
 <tr>
-<td>AVL Tree</td>
+<td><strong>AVL Tree</strong></td>
 <td>不太友好，每个节点都 new 一遍太伤了</td>
 <td>无参可调</td>
 <td>不甚友好，旋转操作发生很频繁，要锁的节点太多</td>
@@ -193,7 +193,7 @@
 <td>easy，谁都写过吧</td>
 </tr>
 <tr>
-<td>Red-Black Tree</td>
+<td><strong>Red-Black Tree</strong></td>
 <td>与 AVL Tree 无异</td>
 <td>无参可调</td>
 <td>AVL Tree 的优化版，旋转操作少了，但总之还是要锁</td>
@@ -201,7 +201,7 @@
 <td>hard，超级难写，写完就玩</td>
 </tr>
 <tr>
-<td>SkipList</td>
+<td><strong>SkipList</strong></td>
 <td>只能说不输于 AVL 和 R-B Tree，每个节点 new 一遍就不可能好于 B-Tree 族罢</td>
 <td>节点在每层的留存概率是可调的，决定了整个 SkipList 的内存占用大小</td>
 <td>比 AVL 和 R-B Tree 肯定是要好的</td>
@@ -209,7 +209,7 @@
 <td>easy</td>
 </tr>
 <tr>
-<td>B-Tree</td>
+<td><strong>B-Tree</strong></td>
 <td>缓存友好性拉满了，一个节点存一堆数据</td>
 <td>节点存数据的数量是可调的，决定了修改时的分裂次数与树的深度</td>
 <td>节点分裂/合并的时候还是要上锁的，但总比 AVL 和 R-B Tree 好点</td>
@@ -217,7 +217,7 @@
 <td>hard，跟 R-B Tree 半斤八两</td>
 </tr>
 <tr>
-<td>B+Tree</td>
+<td><strong>B+Tree</strong></td>
 <td>与 B-Tree 无异</td>
 <td>与 B-Tree 无异</td>
 <td>与 B-Tree 无异</td>
@@ -227,7 +227,7 @@
 </tbody>
 </table>
 <blockquote>
-<p>调参友好度：对于个人开发者而言作用不甚明显，但是对于工业场景，争对不同场景的可调参的数据结构还是各种意义上的很重要的</p>
+<p>调参友好性：对于个人开发者而言作用不甚明显，但是对于工业场景，争对不同场景的可调参的数据结构还是各种意义上的很重要的</p>
 </blockquote>
 <p>以上为不严谨总结，大致上只能分出几种数据结构明显优于/差于其他数据结构的方面，至于同级别的（比如同样缓存友好的 B-Tree 跟 B+Tree 则需要更进一步细化比较）。</p>
 <p>那么标题里的 LSM Tree 呢？实际上 LSM Tree 应该看作一种数据存储组织形式，也就是与使用了 B+Tree 的聚集索引是一个 Level 的东西，这必然要牵扯到大到不可能全放在内存里的数据量，因此编程语言的 map 与 redis 这种纯内存使用场景是不可能使用 LSM Tree 和 B+Tree 的。</p>
