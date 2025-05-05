@@ -185,3 +185,67 @@ private:
 - `unique_ptr`放弃对资源的所有权，并且之后不能再使用它来访问资源，因为它不再拥有该资源。
 - `shared_ptr`接管资源并开始管理它。现在可以有多个`shared_ptr`共享同一资源，直到最后一个`shared_ptr`被销毁或重置，这时才会释放资源。
 
+## weak_ptr 使用场景
+### 资源语义
+这里有一个所谓约定俗成的语义，使用 weak_ptr 是不会干涉对象的生命周期的。换言之良好的代码设计可以让人看出资源的从属关系，要是 shared_ptr 一把梭，循环引用问题不说，资源从属也不是很明确。
+
+网络分层结构中，Session 对象（会话对象）利用 Connection 对象（连接对象）提供的服务工作，但是 Session 对象不管理 Connection 对象的生命周期，Session 管理 Connection 的生命周期是不合理的，因为网络底层出错会导致 Connection 对象被销毁，此时 Session 对象如果强行持有 Connection 对象与事实矛盾。
+
+对于 Cache 类，总是希望 Cache 类拥有某种手段指向资源，这样可以方便地从 Cache 中获取这个资源复用它。但一旦资源不被其他功能需要，应当让它自动被驱逐出去，这时 Cache 持有 shared_ptr 就不行了（或者说，其实 Cache 定期扫描 shared_ptr 计数是否为 1 也行，但有性能损失以及语义不明确的问题），使用 weak_ptr 获取资源有效性即可。
+
+### 探查内存空间是否有效
+以往使用老的方法，判断一个指针是否是 NULL，但是如果这段内存已经被释放却没有赋一个 NULL，那么就会引发未知错误，这需要程序员手动赋值，而且出问题还很难排查。有了 weak_ptr，就方便多了，直接使用其 expired() 方法看下就行了。
+
+参考 [When is std::weak_ptr useful?](https://stackoverflow.com/questions/12030650/when-is-stdweak-ptr-useful)，本例子说明 weak_ptr 可以用来解决 dangling pointer 的问题，
+```C++
+#include <iostream>
+#include <memory>
+
+int main()
+{
+    // OLD, problem with dangling pointer
+    // PROBLEM: ref will point to undefined data!
+    int* ptr = new int(10);
+    int* ref = ptr;
+    delete ptr;
+
+    // NEW
+    // SOLUTION: check expired() or lock() to determine if pointer is valid
+    // empty definition
+    std::shared_ptr<int> sptr;
+
+    // takes ownership of pointer
+    sptr.reset(new int);
+    *sptr = 10;
+
+    // get pointer to data without taking ownership
+    std::weak_ptr<int> weak1 = sptr;
+
+    // deletes managed object, acquires new pointer
+    sptr.reset(new int);
+    *sptr = 5;
+
+    // get pointer to new data without taking ownership
+    std::weak_ptr<int> weak2 = sptr;
+
+    // weak1 is expired!
+    if (weak1.expired())
+    {
+        std::cout << "weak1 is expired\n";
+    } else {
+        auto temp = weak1.lock();
+        std::cout << "value (weak1 point to): "<< *temp << '\n';
+    }
+        
+    // weak2 points to new data (5)
+    if (weak2.expired())
+    {
+        std::cout << "weak2 is expired\n";
+    } else {
+        auto temp = weak2.lock();
+        std::cout << "value (weak2 point to): "<< *temp << '\n';
+    }
+}
+```
+
+代码中 weak1 先是和 sptr 指向相同的内存空间，后面 sptr 释放了那段内存空间然后指向新的内存空间，此时通过 weak1 的 expired() 方法就可以知道本来指向的那段内存空间已经被释放。
