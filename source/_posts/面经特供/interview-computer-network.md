@@ -72,7 +72,7 @@ SYN 洪泛攻击就是攻击半连接队列导致其溢出，后续的所有客�
 
 # TCP
 TCP 包结构如下：
-![TCP 包结构](../../img/interview-computer-network/TCP包结构.png)
+![TCP 包结构](https://gg2002.github.io/img/interview-computer-network/TCP包结构.png)
 
 ## 三次握手与四次挥手
 TCP 三次握手与四次挥手均可视作以下两个行为的拼接：
@@ -80,7 +80,7 @@ TCP 三次握手与四次挥手均可视作以下两个行为的拼接：
 - 服务端不确定客户端状态，向客户端发送请求并等待回应，客户端回应
 
 ### 三次握手
-![TCP 三次握手](../../img/interview-computer-network/TCP三次握手.png)
+![TCP 三次握手](https://gg2002.github.io/img/interview-computer-network/TCP三次握手.png)
 - 第一次握手，客户端首先发起请求，期望得到服务端的回应
 - 第二次握手，服务端不仅回应客户端还想确定客户端状态，因此将两次请求合为一次
 - 第三次握手，客户端回应服务端
@@ -93,7 +93,7 @@ TCP 三次握手与四次挥手均可视作以下两个行为的拼接：
 会导致 TCP 半连接队列打满，这样当 TCP 半连接队列满了，后续再在收到 SYN 报文就会丢弃。
 
 ### 四次挥手
-![TCP 四次挥手](../../img/interview-computer-network/TCP四次挥手.png)
+![TCP 四次挥手](https://gg2002.github.io/img/interview-computer-network/TCP四次挥手.png)
 - 第一次挥手，客户端主动发起挥手请求
 - 第二次挥手，服务端回应
 - 第三次挥手，服务端主动发起挥手请求
@@ -131,7 +131,7 @@ CLOSE_WAIT 状态是只要数据发送完就会自己退出的状态，因此基
 
 ### Tahoe、Reno 和 New Reno
 早期的 TCP 拥塞控制算法仅有**慢启动**与**拥塞避免**两个阶段：
-![TCP 原始拥塞控制算法](../../img/interview-computer-network/TCP原始拥塞控制算法.jpg)
+![TCP 原始拥塞控制算法](https://gg2002.github.io/img/interview-computer-network/TCP原始拥塞控制算法.jpg)
 
 #### Tahoe 和 Reno
 当收到 3 个相同的 ACK 时，TCP 不再等待当前窗口的计时器，而会直接认为当前窗口的包已经超时，重新发送当前窗口的包。这是 **Tahoe 版 TCP** 引入的**快速重传**算法。
@@ -143,7 +143,7 @@ CLOSE_WAIT 状态是只要数据发送完就会自己退出的状态，因此基
 这就是 **Reno 版 TCP** 引入的**快速恢复**算法，否则初始版本会在第二步将 $cwnd = 1$。
 
 快速恢复算法是基于快速重传算法的，因此 Reno 版 TCP 的流程如下所示：
-![TCP Reno 算法](../../img/TCP-New-Reno算法.jpg)
+![TCP Reno 算法](https://gg2002.github.io/img/interview-computer-network/TCP-New-Reno算法.jpg)
 
 #### New Reno
 Reno 版 TCP 只考虑了一个包丢失的情况。设想一个场景：
@@ -166,14 +166,14 @@ Tahoe 和 Reno 都无法实现 [SR ARQ 算法](#arqautomatic-repeat-request自�
 SACK 通过在 TCP option field 中增加一个 SACK 选项来让接收端在返回 Duplicate ACK 时，将已经收到的数据区段（连续收到的数据范围）返回给发送端，数据区段与数据区段之间的间隔就是接收端没有收到的数据。
 
 这样发送端就知道哪些数据包已经收到，哪些该重传，因此 SACK 的发送端可以在一个 RTT 时间内重传多个数据包。
-![TCP SACK 算法](../../img/interview-computer-network/TCP-SACK算法.png)
+![TCP SACK 算法](https://gg2002.github.io/img/interview-computer-network/TCP-SACK算法.png)
 
 #### D-SACK (Duplicate SACK)
 D-SACK 可以让「发送方」知道，是发出去的包丢了，还是接收方回应的 ACK 包丢了。也就是能区分下述两个场景：
-| ACK 回应丢失                                                                         | 发出去的包延迟到达                                                                   |
-| ------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| ![TCP D-SACK 发送延迟](../../img/interview-computer-network/TCP-D-SACK-回应丢失.png) | ![TCP D-SACK 发送延迟](../../img/interview-computer-network/TCP-D-SACK-发送延迟.png) |
-| 同时接到最新的 ACK 和重复的 SACK                                                     | 首先接到了最新的 ACK=3000，然后再次接到最新的 ACK 和重复的 SACK                      |
+| ACK 回应丢失                                                                                            | 发出去的包延迟到达                                                                                      |
+| ------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| ![TCP D-SACK 发送延迟](https://gg2002.github.io/img/interview-computer-network/TCP-D-SACK-回应丢失.png) | ![TCP D-SACK 发送延迟](https://gg2002.github.io/img/interview-computer-network/TCP-D-SACK-发送延迟.png) |
+| 同时接到最新的 ACK 和重复的 SACK                                                                        | 首先接到了最新的 ACK=3000，然后再次接到最新的 ACK 和重复的 SACK                                         |
 
 从 ACK 接受顺序就能分辨出这两个场景，由此可以做更精细的控制（做什么控制？小林 coding 没有写，笔者也不知道）。
 
@@ -185,18 +185,18 @@ D-SACK 可以让「发送方」知道，是发出去的包丢了，还是接收�
 Reno 的拥塞避免阶段是线性增长的。线性逼近管道容量 $W_{max}$ 相当于一次查询 (capacity-seeking)，但**长肥管道**从 $0.5*W_{max}$ 到 $W_{max}$ 的线性遍历太慢，期间一旦遭遇丢包，则前功尽弃。
 > **长肥管道**：具有高带宽 - 延迟积（Bandwidth-Delay Product, BDP）的网络路径。这个术语形象地描述了那些虽然传输速率很高（“肥”），但由于距离远或经过多个路由导致延迟较大（“长”）的网络连接特性。
 
-![TCP Reno 拥塞避免整体趋势](../../img/interview-computer-network/TCP-Reno-拥塞避免整体趋势.png)
+![TCP Reno 拥塞避免整体趋势](https://gg2002.github.io/img/interview-computer-network/TCP-Reno-拥塞避免整体趋势.png)
 可以明显看到每次 TD（Duplicated Acks）的时候，Reno 都要线性增长至最大值再重新减半，以此往复。
 
 但这样对带宽的利用率不是很高，希望最好利用起来这条线段的上半区域，于是有了 **BIC 算法**。
-![TCP BIC 算法](../../img/interview-computer-network/TCP-BIC.png)
+![TCP BIC 算法](https://gg2002.github.io/img/interview-computer-network/TCP-BIC.png)
 
 发生丢包时定义最大拥塞窗口为 $W_{max}$，采用乘性减减小拥塞窗口至 $W_{min}$。BIC 使用用二分搜索的思想快速逼近 $W_{max}$，每经过一个 RTT，便将窗口设置到 $W_{max}$ 和 $W_{min}$ 的中点，如果没有丢包，则更新 $W_{min}$ 为当前 cwnd 值，一直持续到接近 $W_{max}$，直到二者之差小于 $S_{min}$，这很好地利用了线性增长曲线的上半部分空间。
 
 但是在一个 RTT 里面增长过多会造成传输上的抖动，因而 BIC-TCP 选取了另外取了两个参考值，称为 $S_{max}$ 和 $S_{min}$，如果中点和当前 cwnd 值的差大于 $S_{max}$ 的话，那么 cwnd 就只增长 $S_{max}$。
 
 由上可以看出 BIC 这个二分法调参较为复杂，因此又有了直接使用三次多项式拟合 BIC 曲线的 **CUBIC 算法**。
-![TCP CUBIC 算法](../../img/interview-computer-network/TCP-CUBIC.png)
+![TCP CUBIC 算法](https://gg2002.github.io/img/interview-computer-network/TCP-CUBIC.png)
 
 CUBIC 用一个三次多项式代替了 BIC 增长曲线，对窗口增长机制进行了简化，保证了快速探测合适的拥塞窗口。并且不再以 RTT 为单位，窗口增长函数仅仅取决于连续的两次拥塞事件的时间差，保证了公平性。
 
