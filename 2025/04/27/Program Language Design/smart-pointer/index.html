@@ -7,7 +7,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
 <meta property="article:published_time" content="2025-04-27T08:45:10.000Z">
-<meta property="article:modified_time" content="2025-05-05T15:15:26.121Z">
+<meta property="article:modified_time" content="2025-05-10T18:12:50.036Z">
 <meta property="article:author" content="羽殇之舞">
 <meta property="article:tag" content="C&amp;#43;&amp;#43;">
 <meta property="article:tag" content="智能指针">
@@ -59,7 +59,7 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-05-05 23:15:26'
+  postUpdate: '2025-05-11 02:12:50'
 }</script><noscript><style type="text/css">
   #nav {
     opacity: 1
@@ -163,7 +163,7 @@
       }
     }
     detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">智能指针之说</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-27T08:45:10.000Z" title="发表于 2025-04-27 16:45:10">2025-04-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-05T15:15:26.121Z" title="更新于 2025-05-05 23:15:26">2025-05-05</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="智能指针之说"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="raii-与-unique_ptr"><a class="markdownIt-Anchor" href="#raii-与-unique_ptr"></a> RAII 与 unique_ptr</h2>
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">33</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">28</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">智能指针之说</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-04-27T08:45:10.000Z" title="发表于 2025-04-27 16:45:10">2025-04-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-05-10T18:12:50.036Z" title="更新于 2025-05-11 02:12:50">2025-05-11</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>9分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="智能指针之说"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="raii-与-unique_ptr"><a class="markdownIt-Anchor" href="#raii-与-unique_ptr"></a> RAII 与 unique_ptr</h2>
 <p>资源取得时机就是初始化时机（Resource Acquisition Is Intiallization，RAII）是 C++ 内存管理的第一课。</p>
 <p>auto_ptr 自 C++98 提出，直到 C++17 被标准抛弃。后续被 unique_ptr 代替。auto_ptr 是历史遗留问题，是 C++ 的一处败笔，当然现在也已经被摈弃。</p>
 <p>auto_ptr 对拷贝的处理方式是：隐式转移所有权。这不好，C++ 又不是有 GC 的语言，这种隐式容易导致程序员丧失对资源生命周期的掌控。</p>
@@ -224,9 +224,9 @@
 <p>weak_ptr 本身需要<strong>保持控制块 (强引用，以及弱引用的信息) 的生命周期</strong>以确保其它线程知道资源是否被释放，否则其他线程直接使用 weak_ptr 会导致不安全行为，这是前提。</p>
 <p>make_shared 只分配一次内存，减少了内存分配的开销，这很好。但一次性分配的内存会导致 weak_ptr <strong>连带着保持了对象分配的内存</strong>（正如下图所示），只有最后一个 weak_ptr 离开作用域时，内存才会被释放。<br />
 <img src="https://gg2002.github.io/img/smart-pointer/make_shared%E5%88%86%E9%85%8Dshared%E6%8C%87%E9%92%88.png" alt="make_shared 分配 shared 指针" /></p>
-<p>原本强引用减为 0 时就可以释放的内存，现在变为了强引用，若引用都减为 0 时才能释放，意外的延迟了内存释放的时间。这对于内存要求高的场景来说，是一个需要注意的问题。关于这个问题可以看这里 <a target="_blank" rel="noopener" href="https://lanzkron.wordpress.com/2012/04/22/make_shared-almost-a-silver-bullet/">make_shared, almost a silver bullet</a></p>
+<p>原本强引用减为 0 时就可以释放的内存，现在变为了强引用与弱引用都减为 0 时才能释放，意外的延迟了内存释放的时间。这对于内存要求高的场景来说，是一个需要注意的问题。关于这个问题可以看这里 <a target="_blank" rel="noopener" href="https://lanzkron.wordpress.com/2012/04/22/make_shared-almost-a-silver-bullet/">make_shared, almost a silver bullet</a></p>
 <h2 id="智能指针实现"><a class="markdownIt-Anchor" href="#智能指针实现"></a> 智能指针实现</h2>
-<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/680068428">C++ 实现 shared_ptr / weak_ptr /enable_shared_from_this</a></p>
+<p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/680068428">C++ 实现 shared_ptr/weak_ptr/enable_shared_from_this</a></p>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/532215950">C++ 内存管理：shared_ptr/weak_ptr 源码（长文预警）</a></p>
 <h3 id="shared_ptr-怎么实现的引用计数是什么数据格式引用计数的线程安全怎么保证的底层怎么实现"><a class="markdownIt-Anchor" href="#shared_ptr-怎么实现的引用计数是什么数据格式引用计数的线程安全怎么保证的底层怎么实现"></a> shared_ptr 怎么实现的，引用计数是什么数据格式，引用计数的线程安全怎么保证的，底层怎么实现</h3>
 <p><img src="https://gg2002.github.io/img/smart-pointer/shared_ptr%E5%B8%83%E5%B1%80.jpg" alt="shared_ptr 布局" /></p>
@@ -249,9 +249,15 @@
 </ul>
 <h2 id="weak_ptr-使用场景"><a class="markdownIt-Anchor" href="#weak_ptr-使用场景"></a> weak_ptr 使用场景</h2>
 <h3 id="资源语义"><a class="markdownIt-Anchor" href="#资源语义"></a> 资源语义</h3>
-<p>这里有一个所谓约定俗成的语义，使用 weak_ptr 是不会干涉对象的生命周期的。换言之良好的代码设计可以让人看出资源的从属关系，要是 shared_ptr 一把梭，循环引用问题不说，资源从属也不是很明确。</p>
-<p>网络分层结构中，Session 对象（会话对象）利用 Connection 对象（连接对象）提供的服务工作，但是 Session 对象不管理 Connection 对象的生命周期，Session 管理 Connection 的生命周期是不合理的，因为网络底层出错会导致 Connection 对象被销毁，此时 Session 对象如果强行持有 Connection 对象与事实矛盾。</p>
+<p>这里有一个所谓约定俗成的语义，使用 weak_ptr 是不会干涉对象的生命周期的。换言之良好的代码设计可以让人看出资源的从属关系，要是 shared_ptr 一把梭，循环引用问题不说，资源从属也不是很明确。举例有：</p>
+<ol>
+<li>
+<p>网络分层结构中，Session 对象（会话对象）利用 Connection 对象（连接对象）提供的服务工作，但是 Session 对象不管理 Connection 对象的生命周期，Session 管理 Connection 的生命周期是不合理的，因为网络底层出错会导致 Connection 对象被销毁，此时 Session 对象如果强行持有 Connection 对象的 shared_ptr 与事实矛盾。</p>
+</li>
+<li>
 <p>对于 Cache 类，总是希望 Cache 类拥有某种手段指向资源，这样可以方便地从 Cache 中获取这个资源复用它。但一旦资源不被其他功能需要，应当让它自动被驱逐出去，这时 Cache 持有 shared_ptr 就不行了（或者说，其实 Cache 定期扫描 shared_ptr 计数是否为 1 也行，但有性能损失以及语义不明确的问题），使用 weak_ptr 获取资源有效性即可。</p>
+</li>
+</ol>
 <h3 id="探查内存空间是否有效"><a class="markdownIt-Anchor" href="#探查内存空间是否有效"></a> 探查内存空间是否有效</h3>
 <p>以往使用老的方法，判断一个指针是否是 NULL，但是如果这段内存已经被释放却没有赋一个 NULL，那么就会引发未知错误，这需要程序员手动赋值，而且出问题还很难排查。有了 weak_ptr，就方便多了，直接使用其 expired() 方法看下就行了。</p>
 <p>参考 <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/12030650/when-is-stdweak-ptr-useful">When is std::weak_ptr useful?</a>，本例子说明 weak_ptr 可以用来解决 dangling pointer 的问题，</p>
