@@ -120,9 +120,6 @@ Java 的 Synchronized 和 ReentrantLock 都提供了可重入锁的功能，原�
 
 JDK 15 后移除了偏向锁这一机制，这一机制主要是为了优化 Java 以前默认线程安全的集合（HashTable、Vector）的无冲突访问性能的（加锁很耗性能），不过现在已经有了 JUC 这类性能更高的线程安全集合（ConcurrentHashMap、CopyOnWriteArrayList）和默认线程不安全的集合（HashMap、ArrayList），偏向锁显得不再必要，因此被移除了。
 
-#### 数据库的偏向锁（意向锁）
-表级锁，异曲同工之妙。
-
 ### 锁降级
 锁降级是指在持有写锁的情况下再申请读锁然后释放写锁，达成写锁降级为读锁的过程。实际上不仅 Java，这种操作在数据库事务中也很常见。
 

@@ -3,32 +3,6 @@ title: C 十十 面经杂文
 date: 2025-03-17 17:03:54
 tags: 面经
 ---
-# 校招 C++ 大概学习到什么程度
-
-> 写明白下面这几个代码 +能讲明白几个 C++11/14/17 的特性
-> 
-> MyString
-> 
-> MyVector
-> 
-> MyLRU
-> 
-> MySingleton
-> 
-> MyHashTable
-> 
-> MySharedPtr
-> 
-> MyUniquePtr
-> 
-> 再补一个 MyThreadPool
->
-> MyRingbuffer
->
-> MyReadWriteMutex
->
-> [校招 C++ 大概学习到什么程度](https://www.zhihu.com/question/290102232/answer/14904708697)
-
 # STL，C++11
 
 ## move 相关
@@ -76,38 +50,65 @@ B(A a) : _a(a) {}
 
 这两处地方都可以使用 std::move 语义，但是显然 move 的使用并没有让临时对象少生成，因为 move 仅仅是改变资源（成员变量）在变量间的所有权，在 aa 外面套一层 move 壳仅仅会将 aa 从 A& 标记为 A&&。换言之，B(A a) 这个函数创建临时对象的过程仍然存在，只不过 move 会让本该调用复制构造函数的临时对象改成调用移动构造函数（反正无论怎样还是要构造的）。
 
-### 返回值优化（Return Value Optimization, RVO）
-返回值优化与临时对象是密切相关的，写了太多 Rust 以至于笔者下意识认为在栈上的对象是不可返回的，来梳理一下 C++ 返回值的过程，写一个测试函数如下：
+### 返回值优化（Named Return Value Optimization, NRVO）
+返回值优化与临时对象是密切相关的，在栈上的对象并非是一定不可返回的，来梳理一下 C++ 返回值的过程，写一个测试函数如下：
 ```C++
-auto test_RVO() -> A {
+auto test_NRVO() -> A {
   A aa;
   aa.id += 10;
   return aa;
 }
 
-auto a = test_RVO();
+auto a = test_NRVO();
 ```
-> 这里需要禁用编译器的 RVO
+> 这里需要禁用编译器的 NRVO
 
 在没有 move 前（CPP98）函数会输出 `Construct A; Copy A(10) to A(11); Destruct A(-1); end; Destruct A(11);`，有了 move（CPP11 之后）编译器就已经会把复制构造函数替换成移动构造函数了，输出 `Construct A; Move A(10) to A(11); Destruct A(-1); end; Destruct A(11);`。
 
-这说明了，test_RVO 里的 aa 在不做 RVO 前确实会消失，但 C++ 会先把这个 aa 赋值给函数外面的 a 再删除 aa。
+这说明了，test_NRVO 里的 aa 在不做 NRVO 前确实会消失，但 C++ 会先把这个 aa 赋值给函数外面的 a 再删除 aa。
 
-反正 aa 最终都要删除，那么把 aa 变量所有权改成 a 而不是重新复制一份就是 move 语义带来的优化。而 RVO 则更加激进，为什么一定要让 aa 消失呢？不如直接将 a 的内存地址改成 aa 就好，这时会输出 `Construct A; end; Destruct A(10);`。第二个优化会直接把第一个优化盖过去，所以可以看作时 move 优化的激进版。
+反正 aa 最终都要删除，那么把 aa 变量所有权改成 a 而不是重新复制一份就是 move 语义带来的优化。而 NRVO 则更加激进，为什么一定要让 aa 消失呢？不如直接将 a 的内存地址改成 aa 就好，这时会输出 `Construct A; end; Destruct A(10);`。第二个优化会直接把第一个优化盖过去，所以可以看作时 move 优化的激进版。
 
-**因此要慎重考虑返回值的析构函数调用问题。** move 语义不影响临时对象的创建，但是 RVO 会直接消除临时对象。
+**因此要慎重考虑返回值的析构函数调用问题。** move 语义不影响临时对象的创建，但是 NRVO 会直接消除临时对象。
 
-### 完美转发
+那么这是否意味着可以写出这样的函数呢：
+```C++
+auto test_return_arr() -> int * {
+    int a[100];
+    return a;
+}
+```
+
+显然不行，因为 **NRVO 只会对类类型进行优化**，上面这个函数返回的指针指向的数组地址一定是被自动释放了，这是危险操作。但是这样可以：
+```C++
+auto test_return_arr() {
+    std::array<int, 100> a;
+    return a;
+}
+```
+
+所以 C++11 之后都建议使用 `std::array`。
+
+说实话，笔者认为在函数开头赋值一个类类型然后返回的写法也很危险，这种延续栈变量生命周期的编译器行为有些隐蔽了，万一出现什么 Bug，检查代码时也容易忽略。
+
+### 右值引用
+
+### 谈一下你对 &，const &， && 的理解
+也可以从右值构造函数那道题跳过来
 
 ### 万能引用（Universal Reference）
 
-### 谈一下你对&，const &， &&的理解
-也可以从右值构造函数那道题跳过来
+### 完美转发（std::forward）
 
-### cast 操作符
+## cast 操作符
 C++98 的产物，`reinterpret_cast` 和 `const_cast` 都相当于绕过 C++ 的类型检查，有良好的代码设计都不会建议使用。
 
-`dynamic_cast` 的转化效率令人诟病。
+`dynamic_cast` 的转化效率令人诟病。转换不安全或不可能的报错有：
+- 对于指针它会返回 nullptr
+- 而对于引用则抛出一个 std::bad_cast 异常
+
+要使用 `dynamic_cast` 进行向下转型，基类通常需要至少有一个虚函数（即包含虚表 vtable），这是因为 RTTI 数据是存储在虚表中的。这意味着只有当基类拥有虚函数时，派生类才能被正确识别并支持 dynamic_cast。
+
 | 转换操作符         | 主要用途                                                                   | 适用场景                                                                                                                                        |
 | ------------------ | -------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | `static_cast`      | 基本类型的转换、具有继承关系的类之间进行的类型转换、去除 void*指针的具体化 | 用于基础数据类型的转换（如 int 到 float）、具有直接继承关系的类之间的转换；不提供运行时检查                                                     |
@@ -117,9 +118,8 @@ C++98 的产物，`reinterpret_cast` 和 `const_cast` 都相当于绕过 C++ 的
 
 ### 类型擦除相关记录
 
-[从实践中学习类型擦除器](https://zhuanlan.zhihu.com/p/4381133249)
-
-[最近被擦除式泛型恶心坏了。目前来讲，java 有没有可能会在未来重做泛型？原因又是什么？](https://www.zhihu.com/question/593114706)
+- [从实践中学习类型擦除器](https://zhuanlan.zhihu.com/p/4381133249)
+- [最近被擦除式泛型恶心坏了。目前来讲，java 有没有可能会在未来重做泛型？原因又是什么？](https://www.zhihu.com/question/593114706)
 
 ## 智能指针相关
 
@@ -172,8 +172,7 @@ int main() {
   // test_function_pointer(lambda_with_capture); // 会报错
   test_function(lambda_with_capture);
 
-  // 成员函数，this 指针是必要的，需要通过 std::bind 或者 lambda 来适配成
-  // std::function
+  // 成员函数，this 指针是必要的，需要通过 std::bind 或者 lambda 来适配成 std::function
   MyClass obj;
   auto memberFunc = std::bind(&MyClass::multiply, &obj, std::placeholders::_1,
                               std::placeholders::_2);
@@ -185,7 +184,7 @@ int main() {
 ```
 由此可见 std::function 就是为了统一函数接口提出来的，由于是跟 lambda 函数、std::bind 一起提出来的，基本上可以看作是配套措施。rust 和 go 完全没有这种历史包袱，打一开始就是 lambda 函数和正常函数一样传。
 
-lambda 函数不捕获变量也可以作为函数指针传入，但捕获变量了就不行（为什么呢，笔者也不知道）。
+lambda 函数不捕获变量也可以作为函数指针传入，但捕获变量了就不行（为什么呢，见[lambda 函数与仿函数](#lambda-函数与仿函数)）。
 
 而类的非静态成员函数都有个 this 指针作为第一个参数，即使用了 std::bind 绑定了 this 指针，std::bind 返回的**可调用对象**（可调用对象是 C++11 对上述几种函数统一的称呼）也不能直接转成函数指针。那么在 C++11 前该怎么传入类的非静态成员函数呢，使用适配器模式即可的：
 <details>
@@ -234,6 +233,8 @@ int main() {
 }
 ```
 </details>
+
+### lambda 函数与仿函数
 
 
 ## std::future 和 std::promise、std::packaged_task、std::async
@@ -513,109 +514,6 @@ T& operator =(T&& t){
 因为支持多继承，引入了菱形继承问题，又因为要解决菱形继承问题，引入了虚继承。而经过分析，人们发现我们其实真正想要使用多继承的情况并不多。
 
 所以，在 Java 中，不允许“声明多继承”，即一个类不允许继承多个父类。但是 Java 允许“实现多继承”，即一个类可以实现多个接口，一个接口也可以继承多个父接口。由于接口只允许有方法声明而不允许有方法实现（Java 8 之前），这就避免了 C++ 中多继承的歧义问题。
-
-## 用 C++ 实现一个日志系统，可以被调用，要求性能最好。先思考三分钟，说一下思路，伪代码实现。
-设计一个高性能的日志系统，需要考虑几个关键点：
-- 线程安全
-- 最小化日志记录对主程序性能的影响
-- 灵活的日志级别支持
-- 易于扩展和维护。
-
-以下是实现这样一个系统的思路：
-### 思路
-
-1. **日志级别**：定义不同的日志级别（如 DEBUG、INFO、WARNING、ERROR），让用户能够根据需要控制输出的详细程度。
-
-2. **异步日志记录**：为了避免在记录日志时阻塞主线程，采用生产者 - 消费者模式，使用队列来缓存日志消息，并在一个单独的线程中处理这些消息。
-
-3. **高效写入**：为了提高写入效率，可以将多个日志条目批量写入到文件中，减少磁盘 I/O 操作次数。
-
-4. **线程安全**：确保多线程环境下的安全性，特别是当有多个线程同时尝试记录日志时。
-
-5. **格式化与过滤**：提供灵活的日志格式化选项和过滤机制，允许用户自定义哪些级别的日志应当被记录下来。
-
-<details>
-<summary>伪代码实现</summary>
-
-```cpp
-#include <queue>
-#include <thread>
-#include <mutex>
-#include <condition_variable>
-#include <string>
-#include <vector>
-
-enum LogLevel {
-    DEBUG, INFO, WARNING, ERROR
-};
-
-class LogMessage {
-public:
-    LogLevel level;
-    std::string content;
-    // 构造函数等
-};
-
-class Logger {
-private:
-    std::queue<LogMessage> logQueue;
-    std::mutex queueMutex;
-    std::condition_variable cv;
-    std::thread workerThread;
-    bool running = true;
-
-    void worker() {
-        while (running || !logQueue.empty()) {
-            std::unique_lock<std::mutex> lock(queueMutex);
-            cv.wait(lock, [this] { return !running || !logQueue.empty(); });
-            while (!logQueue.empty()) {
-                auto logMsg = logQueue.front();
-                logQueue.pop();
-                // 批量处理并写入日志
-                writeToFile(logMsg);
-            }
-        }
-    }
-
-    void writeToFile(const LogMessage& msg) {
-        // 实现具体的写入逻辑
-    }
-
-public:
-    Logger() {
-        workerThread = std::thread(&Logger::worker, this);
-    }
-
-    ~Logger() {
-        {
-            std::lock_guard<std::mutex> lock(queueMutex);
-            running = false;
-        }
-        cv.notify_all();
-        workerThread.join();
-    }
-
-    void log(LogLevel level, const std::string& message) {
-        if (level >= currentLevel) {
-            std::lock_guard<std::mutex> lock(queueMutex);
-            logQueue.emplace(LogMessage{level, message});
-            cv.notify_one();
-        }
-    }
-
-    LogLevel currentLevel = INFO; // 默认日志级别
-};
-
-// 使用示例
-Logger logger;
-logger.log(INFO, "This is an info message.");
-```
-</details>
-
-这个伪代码展示了如何创建一个简单的异步日志系统。实际应用中可能还需要增加更多的功能，比如配置文件的支持、多种输出目标（文件、控制台等）、更复杂的格式化选项等。此外，还可以通过调整队列大小、批量写入策略等方式进一步优化性能。
-
-## 多线程打印奇偶数
-[三线程依次打印 1~100](os-and-pl-mutex.md)
 
 ## Golang 与 C++ 的区别
 Go（通常称为 Golang）和 C++ 是两种不同的编程语言，它们在设计理念、使用场景以及实现方式上都有显著的区别：

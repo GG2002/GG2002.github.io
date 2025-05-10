@@ -83,11 +83,11 @@ weak_ptr 本身需要**保持控制块 (强引用，以及弱引用的信息) �
 make_shared 只分配一次内存，减少了内存分配的开销，这很好。但一次性分配的内存会导致 weak_ptr **连带着保持了对象分配的内存**（正如下图所示），只有最后一个 weak_ptr 离开作用域时，内存才会被释放。
 ![make_shared 分配 shared 指针](https://gg2002.github.io/img/smart-pointer/make_shared分配shared指针.png)
 
-原本强引用减为 0 时就可以释放的内存，现在变为了强引用，若引用都减为 0 时才能释放，意外的延迟了内存释放的时间。这对于内存要求高的场景来说，是一个需要注意的问题。关于这个问题可以看这里 [make_shared, almost a silver bullet](https://lanzkron.wordpress.com/2012/04/22/make_shared-almost-a-silver-bullet/)
+原本强引用减为 0 时就可以释放的内存，现在变为了强引用与弱引用都减为 0 时才能释放，意外的延迟了内存释放的时间。这对于内存要求高的场景来说，是一个需要注意的问题。关于这个问题可以看这里 [make_shared, almost a silver bullet](https://lanzkron.wordpress.com/2012/04/22/make_shared-almost-a-silver-bullet/)
 
 ## 智能指针实现
 
-[C++ 实现 shared_ptr / weak_ptr /enable_shared_from_this](https://zhuanlan.zhihu.com/p/680068428)
+[C++ 实现 shared_ptr/weak_ptr/enable_shared_from_this](https://zhuanlan.zhihu.com/p/680068428)
 
 [C++ 内存管理：shared_ptr/weak_ptr 源码（长文预警）](https://zhuanlan.zhihu.com/p/532215950)
 
@@ -187,11 +187,11 @@ private:
 
 ## weak_ptr 使用场景
 ### 资源语义
-这里有一个所谓约定俗成的语义，使用 weak_ptr 是不会干涉对象的生命周期的。换言之良好的代码设计可以让人看出资源的从属关系，要是 shared_ptr 一把梭，循环引用问题不说，资源从属也不是很明确。
+这里有一个所谓约定俗成的语义，使用 weak_ptr 是不会干涉对象的生命周期的。换言之良好的代码设计可以让人看出资源的从属关系，要是 shared_ptr 一把梭，循环引用问题不说，资源从属也不是很明确。举例有：
 
-网络分层结构中，Session 对象（会话对象）利用 Connection 对象（连接对象）提供的服务工作，但是 Session 对象不管理 Connection 对象的生命周期，Session 管理 Connection 的生命周期是不合理的，因为网络底层出错会导致 Connection 对象被销毁，此时 Session 对象如果强行持有 Connection 对象与事实矛盾。
+1. 网络分层结构中，Session 对象（会话对象）利用 Connection 对象（连接对象）提供的服务工作，但是 Session 对象不管理 Connection 对象的生命周期，Session 管理 Connection 的生命周期是不合理的，因为网络底层出错会导致 Connection 对象被销毁，此时 Session 对象如果强行持有 Connection 对象的 shared_ptr 与事实矛盾。
 
-对于 Cache 类，总是希望 Cache 类拥有某种手段指向资源，这样可以方便地从 Cache 中获取这个资源复用它。但一旦资源不被其他功能需要，应当让它自动被驱逐出去，这时 Cache 持有 shared_ptr 就不行了（或者说，其实 Cache 定期扫描 shared_ptr 计数是否为 1 也行，但有性能损失以及语义不明确的问题），使用 weak_ptr 获取资源有效性即可。
+2. 对于 Cache 类，总是希望 Cache 类拥有某种手段指向资源，这样可以方便地从 Cache 中获取这个资源复用它。但一旦资源不被其他功能需要，应当让它自动被驱逐出去，这时 Cache 持有 shared_ptr 就不行了（或者说，其实 Cache 定期扫描 shared_ptr 计数是否为 1 也行，但有性能损失以及语义不明确的问题），使用 weak_ptr 获取资源有效性即可。
 
 ### 探查内存空间是否有效
 以往使用老的方法，判断一个指针是否是 NULL，但是如果这段内存已经被释放却没有赋一个 NULL，那么就会引发未知错误，这需要程序员手动赋值，而且出问题还很难排查。有了 weak_ptr，就方便多了，直接使用其 expired() 方法看下就行了。
