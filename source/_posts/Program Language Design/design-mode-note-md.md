@@ -14,11 +14,11 @@ tags:
 - `单⼀职责原则（Single Responsibility Principle, SRP）`，一个类里写所有逻辑直接梦回面向过程
 - `⾥⽒替换原则（Liskov Substitution Principle，LSP）`，保守的鸭子类型思想
 - `依赖倒置原则（Dependency Inversion Principle，DIP）`，本来应该是高级依赖低级，但是现在多出一个 Interface，高级依赖 Interface，低级实现 Interface（它倒置了什么？现在也没变成低级依赖高级哇？）
-- `接⼝隔离原则（Interface Segregation Principle，ISP）`，这个跟 SRP 有甚么区别吗？SRP 是 Class 的 Principle，ISP 是 Interface 的 Principle？
-- `合成/聚合复⽤原则（Composite/Aggregate Reuse Principle，C/ARP）`，组合优于继承
+- `接⼝隔离原则（Interface Segregation Principle，ISP）`，这个跟 SRP 有甚么区别吗？SRP 是 Class 的 Principle，ISP 是 Interface 的 Principle？、
 - `最少知识原则（Least Knowledge Principle，LKP）`或者`迪⽶特法则（Law of Demeter，LOD）`，奥卡姆剃刀秒了
 
 ## 单例模式（最有用的一个）
+- [现代 C++ 学习——更好的单例模式](https://zhuanlan.zhihu.com/p/651173499)
 
 ## 工厂模式
 

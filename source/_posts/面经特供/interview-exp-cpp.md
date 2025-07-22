@@ -515,6 +515,41 @@ T& operator =(T&& t){
 
 所以，在 Java 中，不允许“声明多继承”，即一个类不允许继承多个父类。但是 Java 允许“实现多继承”，即一个类可以实现多个接口，一个接口也可以继承多个父接口。由于接口只允许有方法声明而不允许有方法实现（Java 8 之前），这就避免了 C++ 中多继承的歧义问题。
 
+## 友元函数与友元类
+### 友元函数
+友元函数时可以直接访问类的私有成员或保护成员，**它是定义在类外的普通函数，不属于任何类**，但需要在类的定义中加以声明。
+
+友元函数的声明格式如下：
+```C++
+friend 类型 函数名(形参);
+```
+
+一般用法即 std::swap 的实现：
+```C++
+// 比如在 MyString 类里声明 swap 以交换 private 变量 data 和 len
+// 用法就是 swap(a, b);
+friend void swap(MyString& first, MyString& second) noexcept {
+    using std::swap;
+    swap(first.data, second.data);
+    swap(first.len, second.len);
+}
+
+// 当然也可以不用友元函数
+// 用法就是 a.swap(b);
+void swap(MyString& other) noexcept {
+    using std::swap;
+    swap(this->data, other.data);
+    swap(this->len, other.len);
+}
+```
+
+### 友元类
+设 B 为 A 的友元类，则 A 的所有成员函数都是 B 的友元函数，B 可以访问 A 的保护成员和私有成员。
+
+- 友元类的关系是单向的，因此 `class A { friend class B; };` 并不会让 A 成为 B 的友元类；
+- 友元关系不能被继承；
+- 友元关系不具有传递性。即 B 是 A 的友元，C 是 B 的友元，但 C 不一定是 A 的友元，需要看类中是否有相应的声明。
+
 ## Golang 与 C++ 的区别
 Go（通常称为 Golang）和 C++ 是两种不同的编程语言，它们在设计理念、使用场景以及实现方式上都有显著的区别：
 
