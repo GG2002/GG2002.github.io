@@ -7,18 +7,18 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://gg2002.github.io/img/avatar.jpg">
 <meta property="article:published_time" content="2025-03-30T07:44:40.000Z">
-<meta property="article:modified_time" content="2025-08-16T13:17:16.714Z">
+<meta property="article:modified_time" content="2026-01-09T08:18:52.184Z">
 <meta property="article:author" content="羽殇之舞">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="操作系统">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+<meta name="twitter:image" content="http://gg2002.github.io/img/avatar.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
   root: '/',
   algolia: undefined,
   localSearch: undefined,
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -39,11 +39,9 @@
   copyright: undefined,
   lightbox: 'fancybox',
   Snackbar: undefined,
-  source: {
-    justifiedGallery: {
-      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
-      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
-    }
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
   },
   isPhotoFigcaption: false,
   islazyload: false,
@@ -59,85 +57,78 @@
   isHome: false,
   isHighlightShrink: false,
   isToc: true,
-  postUpdate: '2025-08-16 21:17:16'
-}</script><noscript><style type="text/css">
-  #nav {
-    opacity: 1
-  }
-  .justified-gallery img {
-    opacity: 1
-  }
-
-  #recent-posts time,
-  #post-meta time {
-    display: inline !important
-  }
-</style></noscript><script>(win=>{
-    win.saveToLocal = {
-      set: function setWithExpiry(key, value, ttl) {
-        if (ttl === 0) return
-        const now = new Date()
-        const expiryDay = ttl * 86400000
-        const item = {
-          value: value,
-          expiry: now.getTime() + expiryDay,
+  postUpdate: '2026-01-09 16:18:52'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
         }
-        localStorage.setItem(key, JSON.stringify(item))
-      },
-
-      get: function getWithExpiry(key) {
-        const itemStr = localStorage.getItem(key)
-
-        if (!itemStr) {
-          return undefined
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
         }
-        const item = JSON.parse(itemStr)
-        const now = new Date()
 
-        if (now.getTime() > item.expiry) {
-          localStorage.removeItem(key)
-          return undefined
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
         }
-        return item.value
-      }
-    }
-  
-    win.getScript = url => new Promise((resolve, reject) => {
-      const script = document.createElement('script')
-      script.src = url
-      script.async = true
-      script.onerror = reject
-      script.onload = script.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        script.onload = script.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(script)
-    })
-  
-    win.getCSS = (url,id = false) => new Promise((resolve, reject) => {
-      const link = document.createElement('link')
-      link.rel = 'stylesheet'
-      link.href = url
-      if (id) link.id = id
-      link.onerror = reject
-      link.onload = link.onreadystatechange = function() {
-        const loadState = this.readyState
-        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
-        link.onload = link.onreadystatechange = null
-        resolve()
-      }
-      document.head.appendChild(link)
-    })
-  
-      win.activateDarkMode = function () {
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
         document.documentElement.setAttribute('data-theme', 'dark')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
         }
       }
-      win.activateLightMode = function () {
+      win.activateLightMode = () => {
         document.documentElement.setAttribute('data-theme', 'light')
         if (document.querySelector('meta[name="theme-color"]') !== null) {
           document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
@@ -145,9 +136,9 @@
       }
       const t = saveToLocal.get('theme')
     
-          if (t === 'dark') activateDarkMode()
-          else if (t === 'light') activateLightMode()
-        
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
       const asideStatus = saveToLocal.get('aside-status')
       if (asideStatus !== undefined) {
         if (asideStatus === 'hide') {
@@ -157,13 +148,13 @@
         }
       }
     
-    const detectApple = () => {
-      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
-        document.documentElement.classList.add('apple')
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
       }
-    }
-    detectApple()
-    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">操作系统串记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-30T07:44:40.000Z" title="发表于 2025-03-30 15:44:40">2025-03-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-08-16T13:17:16.714Z" title="更新于 2025-08-16 21:17:16">2025-08-16</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="操作系统串记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="进程间通信方式"><a class="markdownIt-Anchor" href="#进程间通信方式"></a> 进程间通信方式</h1>
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/home_img.jpg')"><nav id="nav"><span id="blog-info"><a href="/" title="羽殇之舞的个人博客"></a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">操作系统串记</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-03-30T07:44:40.000Z" title="发表于 2025-03-30 15:44:40">2025-03-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-01-09T08:18:52.184Z" title="更新于 2026-01-09 16:18:52">2026-01-09</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.7k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="操作系统串记"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="进程间通信方式"><a class="markdownIt-Anchor" href="#进程间通信方式"></a> 进程间通信方式</h1>
 <blockquote>
 <h2 id="ipc-benchmark"><a class="markdownIt-Anchor" href="#ipc-benchmark"></a> IPC Benchmark</h2>
 <table>
@@ -274,15 +265,7 @@
 <p>消息队列提供了一个存储和转发机制，使得进程可以通过发送和接收消息来进行通信。它展示了很高的效率，可以处理 232,253 条每秒 100 字节的消息和 213,796 条每秒 1K 字节的消息。</p>
 <h2 id="shared-memory-与-memory-mapped-files"><a class="markdownIt-Anchor" href="#shared-memory-与-memory-mapped-files"></a> Shared Memory 与 Memory-Mapped Files</h2>
 <p>共享内存允许两个或多个进程共享一块内存区域，有两种方式，即 <code>shm</code>（Shared Memory）和 <code>mmap</code>（Memory-Mapped File）。</p>
-<ul>
-<li><strong>File-backed mmap 会带来持久化特性</strong>（不然怎么叫 Memory Mapped 呢？memory 被 mapped 到 disk），也是最一般的 mmap 用法，接受一个 fd（文件句柄），调用 <code>msync()</code> 可以将内容主动刷入这个 fd 指代的文件；</li>
-<li><strong>Anonymous mmap 只申请内存</strong>，malloc 函数就会调用这种 mmap 申请内存。Anonymous mmap 不能给完全无关的两个进程通信，只能用于父子进程间通信或者纯分配内存，因为 Anonymous mmap 是靠设置 fd 为 -1 实现的，没有 fd 就意味着只存在于内存，但是也缺失了定位的手段；</li>
-<li><strong>shm 不涉及磁盘 I/O，所以理论上性能会优于 File-backed mmap，跟 Anonymous mmap 差不多</strong>，但 shm 可以使用一个类似文件路径的名字（比如 <code>/my_shared_memory</code>，创建好后会存在于 <code>/dev/shm/</code> 目录下）定位同一块内存，可以做到正常的多进程访问。</li>
-</ul>
-<p>内存映射文件允许一个文件或文件的一部分被映射到进程的地址空间中，从而实现高效的文件 I/O 操作。它是所有方法中性能最高的，特别是对于小消息，能够达到 5,338,860 msg/s，而对于1K字节的消息则为1,701,759 msg/s。</p>
-<h2 id="面经问答"><a class="markdownIt-Anchor" href="#面经问答"></a> 面经问答</h2>
-<h3 id="共享内存为什么最快"><a class="markdownIt-Anchor" href="#共享内存为什么最快"></a> 共享内存为什么最快？</h3>
-<p>共享内存是最快的 IPC 形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递不再涉及到内核，换句话说是<strong>进程不再进入内核执行系统调用</strong>来传递彼此的数据。</p>
+<p>共享内存是最快的 IPC 形式。一旦这样的内存映射到共享它的进程的地址空间，这些进程间数据传递不再涉及到内核，换句话说是进程不再通过执行进入内核的系统调用来传递彼此的数据。</p>
 <table>
 <thead>
 <tr>
@@ -297,8 +280,9 @@
 </tr>
 </tbody>
 </table>
+<p>内存映射文件允许一个文件或文件的一部分被映射到进程的地址空间中，从而实现高效的文件 I/O 操作。它是所有方法中性能最高的，特别是对于小消息，能够达到 5,338,860 msg/s，而对于1K字节的消息则为1,701,759 msg/s。</p>
 <blockquote>
 <p><a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/348225926">io_uring 性能被 mmap 吊打，真相竟然是……</a></p>
 <p>不知道塞哪，就放这里。</p>
 </blockquote>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://gg2002.github.io">羽殇之舞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/">http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://gg2002.github.io" target="_blank">羽殇之舞的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/04/09/message-queue-note/" title="消息队列笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">消息队列笔记</div></div></a></div><div class="next-post pull-right"><a href="/2025/03/21/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-distributed-id-generator/" title="分布式唯一 ID 生成算法笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">分布式唯一 ID 生成算法笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/03/20/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-computer-network/" title="计算机网络串记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-20</div><div class="title">计算机网络串记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">37</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">29</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text"> 进程间通信方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ipc-benchmark"><span class="toc-number">1.1.</span> <span class="toc-text"> IPC Benchmark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unix-signals"><span class="toc-number">1.2.</span> <span class="toc-text"> Unix Signals</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zeromq-tcp"><span class="toc-number">1.3.</span> <span class="toc-text"> ZeroMQ (TCP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#internet-sockets-tcp"><span class="toc-number">1.4.</span> <span class="toc-text"> Internet sockets (TCP)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket-%E9%80%9A%E4%BF%A1%E5%8F%8C%E6%96%B9%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text"> Socket 通信双方建立连接的函数调用过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%8F%91%E7%94%9F%E5%9C%A8-socket-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%93%AA%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 三次握手发生在 Socket 建立连接的哪个步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#socket-%E6%80%8E%E4%B9%88%E9%80%9A%E4%BF%A1socket-%E6%98%AF%E6%96%87%E4%BB%B6read-%E5%92%8C-write"><span class="toc-number">1.4.3.</span> <span class="toc-text"> Socket 怎么通信？Socket 是文件，read 和 write</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#domain-sockets"><span class="toc-number">1.5.</span> <span class="toc-text"> Domain sockets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pipes"><span class="toc-number">1.6.</span> <span class="toc-text"> Pipes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fifos-named-pipes"><span class="toc-number">1.7.</span> <span class="toc-text"> FIFOs (named pipes)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#message-queues"><span class="toc-number">1.8.</span> <span class="toc-text"> Message Queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shared-memory-%E4%B8%8E-memory-mapped-files"><span class="toc-number">1.9.</span> <span class="toc-text"> Shared Memory 与 Memory-Mapped Files</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E7%BB%8F%E9%97%AE%E7%AD%94"><span class="toc-number">1.10.</span> <span class="toc-text"> 面经问答</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%86%85%E5%AD%98%E4%B8%BA%E4%BB%80%E4%B9%88%E6%9C%80%E5%BF%AB"><span class="toc-number">1.10.1.</span> <span class="toc-text"> 共享内存为什么最快？</span></a></li></ol></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/18/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-hr-roleplay/" title="HR 面角色扮演话术">HR 面角色扮演话术</a><time datetime="2025-08-18T06:54:27.000Z" title="发表于 2025-08-18 14:54:27">2025-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/07/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-system-design/" title="系统设计面试速记">系统设计面试速记</a><time datetime="2025-08-07T08:26:08.000Z" title="发表于 2025-08-07 16:26:08">2025-08-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/16/orm-parser-design/" title="数据库适配迁移方案设计">数据库适配迁移方案设计</a><time datetime="2025-07-16T07:03:37.000Z" title="发表于 2025-07-16 15:03:37">2025-07-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/06/11/turtle-note/" title="Turtle 分类与市场价格（2025 版）">Turtle 分类与市场价格（2025 版）</a><time datetime="2025-06-11T00:53:48.000Z" title="发表于 2025-06-11 08:53:48">2025-06-11</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/29/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-my-handwritten-data-structure/" title="为面试疯狂，C++ 面试手写数据结构大全">为面试疯狂，C++ 面试手写数据结构大全</a><time datetime="2025-04-29T20:54:48.000Z" title="发表于 2025-04-30 04:54:48">2025-04-30</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2025 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://gg2002.github.io">羽殇之舞</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/">http://gg2002.github.io/2025/03/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-exp-os/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://gg2002.github.io" target="_blank">羽殇之舞的个人博客</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E7%AC%94%E8%AE%B0/">笔记</a><a class="post-meta__tags" href="/tags/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/">操作系统</a></div><div class="post_share"><div class="social-share" data-image="/img/avatar.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2025/04/20/Program%20Language%20Design/design-mode-note-md/" title="设计模式速记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">设计模式速记</div></div></a></div><div class="next-post pull-right"><a href="/2025/03/22/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-distributed-id-generator/" title="分布式唯一 ID 生成算法笔记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">分布式唯一 ID 生成算法笔记</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2025/03/20/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-computer-network/" title="计算机网络串记"><div class="cover" style="background: var(--default-bg-color)"></div><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2025-03-20</div><div class="title">计算机网络串记</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">羽殇之舞</div><div class="author-info__description">大三上开始摸鱼的博客，不会真的有人看吧，不会吧不会吧</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">28</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">25</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/GG2002"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/GG2002" target="_blank" title="Github"><i class="fab fa-github" style="color: #24292e;"></i></a><a class="social-icon" href="mailto:feathercyc@163.com" target="_blank" title="Email"><i class="fas fa-envelope" style="color: #24292e;"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text"> 进程间通信方式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#ipc-benchmark"><span class="toc-number">1.1.</span> <span class="toc-text"> IPC Benchmark</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unix-signals"><span class="toc-number">1.2.</span> <span class="toc-text"> Unix Signals</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#zeromq-tcp"><span class="toc-number">1.3.</span> <span class="toc-text"> ZeroMQ (TCP)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#internet-sockets-tcp"><span class="toc-number">1.4.</span> <span class="toc-text"> Internet sockets (TCP)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#socket-%E9%80%9A%E4%BF%A1%E5%8F%8C%E6%96%B9%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%87%E7%A8%8B"><span class="toc-number">1.4.1.</span> <span class="toc-text"> Socket 通信双方建立连接的函数调用过程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B%E5%8F%91%E7%94%9F%E5%9C%A8-socket-%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%93%AA%E4%B8%AA%E6%AD%A5%E9%AA%A4"><span class="toc-number">1.4.2.</span> <span class="toc-text"> 三次握手发生在 Socket 建立连接的哪个步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#socket-%E6%80%8E%E4%B9%88%E9%80%9A%E4%BF%A1socket-%E6%98%AF%E6%96%87%E4%BB%B6read-%E5%92%8C-write"><span class="toc-number">1.4.3.</span> <span class="toc-text"> Socket 怎么通信？Socket 是文件，read 和 write</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#domain-sockets"><span class="toc-number">1.5.</span> <span class="toc-text"> Domain sockets</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#pipes"><span class="toc-number">1.6.</span> <span class="toc-text"> Pipes</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fifos-named-pipes"><span class="toc-number">1.7.</span> <span class="toc-text"> FIFOs (named pipes)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#message-queues"><span class="toc-number">1.8.</span> <span class="toc-text"> Message Queues</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#shared-memory-%E4%B8%8E-memory-mapped-files"><span class="toc-number">1.9.</span> <span class="toc-text"> Shared Memory 与 Memory-Mapped Files</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/08/18/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-hr-roleplay/" title="HR 面角色扮演话术">HR 面角色扮演话术</a><time datetime="2025-08-18T06:54:27.000Z" title="发表于 2025-08-18 14:54:27">2025-08-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/07/16/orm-parser-design/" title="数据库适配迁移方案设计">数据库适配迁移方案设计</a><time datetime="2025-07-16T07:03:37.000Z" title="发表于 2025-07-16 15:03:37">2025-07-16</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/30/%E9%9D%A2%E7%BB%8F%E7%89%B9%E4%BE%9B/interview-my-handwritten-data-structure/" title="为面试疯狂，C++ 面试手写数据结构大全">为面试疯狂，C++ 面试手写数据结构大全</a><time datetime="2025-04-29T20:54:48.000Z" title="发表于 2025-04-30 04:54:48">2025-04-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/28/tree-map-compare/" title="The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList">The Difference Between B-Tree, B+Tree, Red-Black Tree, LSM Tree and SkipList</a><time datetime="2025-04-28T08:23:50.000Z" title="发表于 2025-04-28 16:23:50">2025-04-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2025/04/27/Program%20Language%20Design/smart-pointer/" title="智能指针之说">智能指针之说</a><time datetime="2025-04-27T08:45:10.000Z" title="发表于 2025-04-27 16:45:10">2025-04-27</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2026 By 羽殇之舞</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
